@@ -297,12 +297,12 @@ const BookTable = () => {
                       onFocus={(e) => e.target.style.borderColor = 'var(--color-tiger-gold)'}
                       onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.15)'}
                     >
-                      <option value="" disabled selected style={{ backgroundColor: '#11421b' }}>Select number of guests</option>
-                      <option value="1" style={{ backgroundColor: '#11421b' }}>1 Person</option>
-                      <option value="2" style={{ backgroundColor: '#11421b' }}>2 People</option>
-                      <option value="3" style={{ backgroundColor: '#11421b' }}>3 People</option>
-                      <option value="4" style={{ backgroundColor: '#11421b' }}>4 People</option>
-                      <option value="5" style={{ backgroundColor: '#11421b' }}>5+ People</option>
+                      <option value="" disabled selected style={{ backgroundColor: '#0a180f' }}>Select number of guests</option>
+                      <option value="1" style={{ backgroundColor: '#0a180f' }}>1 Person</option>
+                      <option value="2" style={{ backgroundColor: '#0a180f' }}>2 People</option>
+                      <option value="3" style={{ backgroundColor: '#0a180f' }}>3 People</option>
+                      <option value="4" style={{ backgroundColor: '#0a180f' }}>4 People</option>
+                      <option value="5" style={{ backgroundColor: '#0a180f' }}>5+ People</option>
                     </select>
                   </div>
                 </div>

@@ -1,244 +1,211 @@
-<div align="center">
+# REGALUX AI — Synthetic User Research Intelligence
 
-# 🍽️ Modern Restaurant & Café Web Application Template
-### *A High-Converting, Production-Ready Restaurant Website with 3D Flipbook Menu & Scroll-Linked Motion*
+> **AI-Powered Synthetic User Research & Product Validation Platform**  
+> *Exclusive, Royal Obsidian + Champagne Gold + Royal Emerald Digital Research Suite*
 
-[![GitHub Stars](https://img.shields.io/github/stars/santoshjena6/kadappa-cafe?style=for-the-badge&logo=github&color=ffb400&logoColor=white)](https://github.com/santoshjena6/kadappa-cafe/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/santoshjena6/kadappa-cafe?style=for-the-badge&logo=github&color=11421b&logoColor=white)](https://github.com/santoshjena6/kadappa-cafe/network/members)
-[![Follow @santoshjena6](https://img.shields.io/github/followers/santoshjena6?label=Follow%20%40santoshjena6&style=for-the-badge&logo=github&color=ffb400&logoColor=white)](https://github.com/santoshjena6)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
-[![React 19](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-8.3-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
-
-<br />
-
-<p align="center">
-  <b>Built for restaurants, cafés, bistros, cloud kitchens, and fine dining establishments.</b><br />
-  Easily customize branding, menu items, colors, and reservation forms in under 10 minutes.
-</p>
-
-[✨ Key Features](#-key-features) •
-[🚀 Quick Start](#-quick-start) •
-[🎨 Customization Guide](#-customization-guide-adapt-for-any-restaurant) •
-[📂 Project Structure](#-project-structure) •
-[🗺️ Roadmap](#️-upcoming-features--roadmap) •
-[⭐ Support](#-show-your-support--follow-for-upcoming-projects)
+![REGALUX AI Badge](https://img.shields.io/badge/Architecture-Full--Stack%20FastAPI%20%2B%20React-D6B66F)
+![Testing Suite](https://img.shields.io/badge/Test%20Suite-100%25%20Passing-34D399)
+![License](https://img.shields.io/badge/Edition-Executive%20Enterprise-123D32)
 
 ---
 
-</div>
+## 1. Executive Summary & Vision
 
-> [!IMPORTANT]
-> ### 🌟 Support The Developer & Stay Tuned For Upcoming Projects!
-> If you are using this code for your restaurant, client projects, or learning:
-> 1. ⭐ **Star this repository** to help other developers and restaurant owners discover it.
-> 2. 👤 **Follow [@santoshjena6](https://github.com/santoshjena6) on GitHub** to get notified about upcoming open-source releases:
->    - 🛒 **Full-Stack Restaurant POS & Online Ordering System** (Cart + Payment Gateway)
->    - 📱 **Mobile-First Food Ordering App UI**
->    - ☁️ **AWS Serverless Table Booking Backend** (AWS Lambda, DynamoDB & SES Email Confirmations)
->
-> 👉 **[Click here to follow @santoshjena6 on GitHub](https://github.com/santoshjena6)** 👈
+**REGALUX AI** is a production-minded synthetic user research and product validation platform engineered for executive product leaders, UX strategists, and venture architects. 
 
----
+Instead of static landing pages or fabricated dashboard cards, REGALUX AI provides a fully operational simulation engine where diverse, AI-synthesized customer personas participate in parallel quantitative surveys, engage in stateful multi-turn discovery interviews powered by vector memory, and yield explainable product adoption scores (0–100) supported by verifiable quotes and downloadable 18-chapter PDF dossiers.
 
-## 📸 Overview
-
-This repository provides an **ultra-modern, highly aesthetic web application** for modern dining businesses. While configured out of the box with the **Kadappa Café** South Indian theme, **the codebase is 100% modular and generic** — built so any developer can rebrand it for Italian trattorias, Mexican taquerias, specialty coffee bars, bakeries, or sushi lounges with minimal effort.
+### The Flagship Subject Study: SwiftBite
+The initial preloaded study investigates **SwiftBite — Smart Food Delivery App** across 5 core hypotheses for urban working professionals:
+1. **30-Minute Food Delivery Guarantee:** Investigating meeting calendar predictability vs. extreme speed.
+2. **Dietician-Curated Healthy Food Section:** Measuring demand for transparent macro disclosures (protein, carbs, calories) and zero refined oils.
+3. **SwiftBite Prime Subscription Plan:** Evaluating break-even economics for frequent corporate diners.
+4. **Live Real-Time GPS Tracking:** Assessing sub-meter arrival notifications to prevent phone call disruptions.
+5. **₹99 Delivery Fee:** Analyzing severe price elasticity across budget associates vs. corporate consultants.
 
 ---
 
-## ✨ Key Features
+## 2. Royal Visual Identity & Aesthetic System
 
-- 📖 **Interactive 3D Virtual Flipbook Menu**: Real turn-page physics powered by `react-pageflip`. Customers can realistically flip through high-resolution digital menu pages with smooth page curl animations.
-- 🎬 **Scroll-Linked Food Motion Physics**: Signature dish hero animation powered by `framer-motion` that tracks scroll progress smoothly across sections.
-- 📅 **Split-Screen Table Reservation System**: Clean booking flow featuring guest selector, date & time pickers, and interactive confirmation state.
-- 🎥 **Video Reels Showcase ("Watch Us")**: Showcase food preparation, kitchen behind-the-scenes, and customer dining vibes.
-- 💎 **Curated Luxury Aesthetic**: Dark earthy greens, warm turmeric gold, glassmorphic blur cards, and editorial typography (`Antonio`, `Playfair Display`, `Inter`).
-- ⚡ **Lightning Fast Performance**: Built on React 19 and Vite 8 with an optimized bundle size that builds in under **750ms**.
-- 🔍 **Clean Code Architecture**: Modular components, separated layouts, and clean route management with React Router v7.
+Designed with a distinctive **Royal Obsidian + Champagne Gold + Royal Emerald** visual language combining an exclusive research laboratory with a luxury editorial publication:
 
----
-
-## 🛠️ Tech Stack
-
-- **Core**: [React 19](https://react.dev/)
-- **Bundler**: [Vite 8](https://vitejs.dev/)
-- **Routing**: [React Router DOM v7](https://reactrouter.com/)
-- **Animation & Transitions**: [Framer Motion v14](https://www.framer.com/motion/)
-- **Book Flip Effect**: [react-pageflip](https://github.com/Nodlik/react-pageflip)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Linter**: [Oxlint](https://oxc.rs/)
-- **Styling**: Vanilla CSS + CSS Design Tokens (`global.css`)
+- **Obsidian Black (`#0B0D10`):** Ultra-dark foundational workspace canvas.
+- **Midnight Navy (`#111827`):** Layered card surfaces with backdrop blur.
+- **Deep Royal Emerald (`#123D32`):** Strategic verification accents and healthy nutrition tags.
+- **Antique Champagne Gold (`#D6B66F`):** Metrics, active borders, progress dials, and headlines.
+- **Soft Ivory (`#F6F1E7`):** High-contrast editorial typography.
+- **Muted Silver (`#A8B0BC`):** Refined secondary metadata labels.
+- **Three.js Particle Constellation:** Ambient celestial background on landing hero with graceful WebGL fallback.
 
 ---
 
-## 🚀 Quick Start
+## 3. Technology Stack
+
+- **Frontend:** React 19 + Vite 8 + Tailwind CSS v4.
+- **State & Routing:** React Router v7 + React Context API (`AuthContext`).
+- **Data Visualizations:** Recharts (Sentiment Doughnuts, Segment Bar Charts, Radar Distributions).
+- **Icons & Motion:** Lucide React + Framer Motion.
+- **Cinematic Canvas:** Three.js Particle Constellation with reduced-motion fallbacks.
+- **Backend:** Python 3.13 FastAPI with async routing and CORS middleware.
+- **Database:** SQLAlchemy 2.0 ORM with MySQL support and SQLite automatic local fallback.
+- **Database Migrations:** Alembic migration suite (`backend/alembic`).
+- **LLM Provider:** Groq API (`llama-3.3-70b-versatile`, `llama-3.1-8b-instant`, `mixtral-8x7b-32768`).
+- **Persona Vector Memory:** NumPy-based local cosine vector memory store with sub-millisecond semantic retrieval.
+- **Authentication:** JWT Bearer tokens with PBKDF2/SHA-256 secure password hashing.
+- **PDF Generation Engine:** ReportLab with custom `NumberedCanvas`, luxury editorial palette, dynamic tables, and page decoration.
+- **Testing Suites:** Pytest + Httpx integration test runner.
+
+---
+
+## 4. Key Application Modules
+
+### 1. Research Dashboard (`/dashboard`)
+Executive overview displaying live metrics: Active Studies, Synthetic Personas, Completed Surveys, Interview Sessions, Extracted Themes, and Overall Adoption Potential (74.6%). Visualizes sentiment distributions and segment scores via interactive Recharts.
+
+### 2. Persona Studio (`/personas`)
+Explore 8 preloaded working professional archetypes:
+1. **Arjun Sharma:** Senior Software Engineer *(Time-pressed corporate professional)*
+2. **Pooja Hegde:** Associate Marketing Specialist *(Budget-conscious office employee)*
+3. **Dr. Kavita Narayanan:** Clinical Research Lead *(Health-conscious working professional)*
+4. **Rohan Mehra:** Management Consultant *(Frequent food delivery customer)*
+5. **Sunita Patil:** Senior HR Director *(Occasional restaurant-ordering customer)*
+6. **Vikram Sethi:** Equity Research Analyst *(Vegetarian professional)*
+7. **Tanmay Ghosh:** Cloud Reliability Engineer *(Night-shift worker)*
+8. **Ayesha Farooqi:** Venture Partner *(Premium convenience-focused professional)*
+Includes dynamic archetype re-synthesis, deep profile expansion, and side-by-side comparison modal.
+
+### 3. Experiment Builder (`/experiments/new`)
+6-step guided wizard: Product Definition → Select Personas → Choose Research Methods (Survey, Interview, Both) → Questions Configuration → Review & Launch with live progress execution bar.
+
+### 4. Survey Lab (`/surveys`)
+Side-by-side persona comparison matrix across all survey questions. Features segment filtering, expandable persona reasoning, consistency validation scores, and one-click CSV export.
+
+### 5. Interview Room (`/interviews`)
+3-pane split qualitative discovery room:
+- **Left Pane:** Persona profile dossier (schedule, budget, dietary habits, objections).
+- **Center Pane:** Multi-turn conversational chat with suggested opening prompts and typing indicator.
+- **Right Pane:** Vector Memory Radar retrieving episodic facts and identity alignment guards.
+
+### 6. Insights & Evidence Intelligence (`/insights`)
+Clusters research responses into structured themes with confidence ratings, sentiment pills, product strategy implications, and genuine participant quotes.
+
+### 7. Product Adoption Scoring (`/adoption`)
+Transparent, explainable 0–100 scoring algorithm:
+$$\text{Score} = 0.25 \times \text{Speed} + 0.20 \times \text{Health} + 0.20 \times \text{Subscription} + 0.15 \times \text{Tracking} + 0.20 \times \text{Fee Tolerance}$$
+Includes segment mean scores, top features, and primary barriers.
+
+### 8. Scenario Library (`/scenarios`)
+5 preloaded cross-domain templates ready for 1-click instantiation:
+- **SwiftBite:** Food Delivery & Hyperlocal
+- **NexLearn:** Online Upskilling Platform
+- **PulseFit:** AI Workout & Longevity Companion
+- **ArthaWealth:** Automated Personal Finance Vault
+- **Chronos Flow:** Task & Meeting Orchestrator
+Includes automated cross-domain validation testing.
+
+### 9. Research Reports (`/reports`)
+Generates and downloads publication-grade PDF dossiers with all 18 mandatory chapters, numbered canvas footers, executive summaries, and prominent synthetic research notices.
+
+### 10. Subject Prototype Preview (`/cafe`)
+Directly integrates the Kadappa Cafe & SwiftBite live food prototype under study with a top ribbon return banner.
+
+---
+
+## 5. Quickstart & Installation Guide
 
 ### Prerequisites
-- Node.js (version 18+ recommended)
-- npm, pnpm, or yarn
+- Node.js v18+ and npm
+- Python 3.10+ (tested on Python 3.13)
 
-### 1. Clone the repository
+### Backend Setup
 ```bash
-git clone https://github.com/santoshjena6/kadappa-cafe.git
-cd kadappa-cafe
+cd backend
+
+# Create and activate virtual environment
+python -m venv venv
+# On Windows:
+venv\Scripts\activate
+# On Linux/macOS:
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run database auto-seeding
+python -m app.db.seed
+
+# Start backend server (runs on port 8001)
+python run.py
 ```
 
-### 2. Install dependencies
+### Frontend Setup
 ```bash
+# In project root:
 npm install
-```
 
-### 3. Launch local development server
-```bash
+# Start Vite dev server with proxy to backend
 npm run dev
 ```
-Open your browser and navigate to `http://localhost:5173`.
+Open **`http://localhost:5173`** (or `http://localhost:5174`) in your browser.
 
-### 4. Create production build
+---
+
+## 6. Default Seeded Credentials
+
+- **Email:** `researcher@regalux.ai`
+- **Password:** `RoyalSecret2026!`
+- *(Or click the **"Autofill Seeded Demo Credentials"** button on the Login page for 1-click access)*
+
+---
+
+## 7. Environment Configuration (`.env`)
+
+Create a `.env` file in the root or `backend/` directory:
+
+```env
+# Server & Security
+SECRET_KEY=regalux-royal-champagne-emerald-secret-2026-production
+ACCESS_TOKEN_EXPIRE_MINUTES=10080
+
+# Database (MySQL recommended in production; SQLite auto-fallback locally)
+DATABASE_URL=sqlite:///./regalux.db
+# For MySQL: mysql+pymysql://<user>:<password>@localhost:3306/regalux_db
+
+# Groq LLM API Configuration (Optional)
+GROQ_API_KEY=
+GROQ_MODEL=llama-3.3-70b-versatile
+
+# Demo Mode (Forces deterministic simulation when true or when API key is empty)
+DEMO_MODE=false
+```
+
+---
+
+## 8. Automated Testing
+
+### 1. Pytest Backend Suite (9 Unit & Integration Tests)
 ```bash
-npm run build
+# In project root:
+$env:PYTHONPATH="backend"; backend\venv\Scripts\pytest.exe backend\tests\test_api.py -v
 ```
-The optimized production files will be output into the `dist/` directory, ready to deploy to **AWS (S3 + CloudFront)**, **Vercel**, **Netlify**, or any static hosting platform.
+**Results:** `9 passed in 1.04s`
 
----
-
-## 🎨 Customization Guide (Adapt for Any Restaurant)
-
-You can transform this template for any restaurant brand in 5 simple steps:
-
-### 1. Update Theme Colors & Fonts
-Open `src/styles/global.css` and update the CSS variables in `:root`:
-
-```css
-:root {
-  /* Brand Colors - change these to your restaurant's palette */
-  --color-tiger-gold: #ffb400;     /* Primary accent / button color */
-  --color-ember-rust: #11421b;     /* Main background color */
-  --color-dark-spice: #0a2911;     /* Card surface color */
-  --color-charred-clove: #051408;  /* Deep dark contrast */
-  
-  /* Fonts */
-  --font-salmond: 'Antonio', sans-serif;
-  --font-graphikx: 'Inter', sans-serif;
-}
+### 2. Full System End-to-End Verification (10 Key Capabilities)
+```bash
+$env:PYTHONIOENCODING="utf-8"; backend\venv\Scripts\python.exe backend\tests\verify_full_system.py
 ```
-
-### 2. Replace Restaurant Logo & Brand Assets
-Place your assets in the `/public` directory:
-- `/public/logo.png`: Replace with your restaurant's logo.
-- `/public/favicon.svg`: Replace with your site favicon.
-- `/public/dosa.png`: Replace with your signature dish transparent PNG for the scroll animation.
-
-### 3. Upload Your Own Flipbook Menu Pages
-Inside `/public/Menu/`, replace the menu images with your restaurant's menu pages:
-```
-public/Menu/
-├── 1.png   (Cover page)
-├── 2.png   (Starters / Appetizers)
-├── 3.png   (Main Course)
-├── 4.png   (Desserts & Beverages)
-└── 5.png   (Back Cover / Special Combos)
-```
-*Tip: High-resolution portrait PNGs (aspect ratio roughly 3:4) look best in the flipbook!*
-
-### 4. Edit Restaurant Details & Address
-- **Contact & Location**: Update your address, phone, and email in `src/pages/Contact.jsx` and `src/components/Footer.jsx`.
-- **Operating Hours**: Update operating hours in `src/components/Footer.jsx`.
-- **About Story**: Personalize your chef's story and restaurant mission in `src/pages/About.jsx`.
-
-### 5. Hook Up Table Reservations to Your Backend
-In `src/pages/BookTable.jsx`, locate `handleSubmit`:
-```javascript
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  // Call your API endpoint, AWS Lambda function, or EmailJS service here:
-  // await fetch('/api/reservations', { method: 'POST', body: JSON.stringify(formData) });
-  setIsSubmitted(true);
-};
-```
+**Results:** `ALL 10 END-TO-END VERIFICATION CHECKS PASSED WITH ROYAL DISTINCTION!`
 
 ---
 
-## 📂 Project Structure
+## 9. Project Archive Artifact
 
-```text
-kadappa-cafe/
-├── public/
-│   ├── Menu/                  # Flipbook menu page scans (1.png - 5.png)
-│   ├── logo.png               # Restaurant brand logo
-│   ├── dosa.png               # Hero interactive scroll item
-│   ├── filtercoffe.png        # Must-try item card image
-│   ├── thali.png              # Must-try item card image
-│   └── kathakali.png          # Reservation page art
-├── src/
-│   ├── components/
-│   │   ├── Navbar.jsx         # Header navigation bar
-│   │   └── Footer.jsx         # Footer with contact, newsletter & hours
-│   ├── layouts/
-│   │   └── MainLayout.jsx     # Master layout wrapper with <Outlet />
-│   ├── pages/
-│   │   ├── Home.jsx           # Hero, scroll physics, video reel & dishes
-│   │   ├── Menu.jsx           # 3D interactive virtual flipbook menu
-│   │   ├── BookTable.jsx      # Reservation booking system
-│   │   ├── About.jsx          # Brand story, stats & core values
-│   │   └── Contact.jsx        # Location info & contact form
-│   ├── routes/
-│   │   └── AppRoutes.jsx      # React Router route definitions
-│   ├── styles/
-│   │   └── global.css         # CSS variables, glassmorphism & typography
-│   ├── App.jsx                # Main application component
-│   └── main.jsx               # React DOM root entry
-├── index.html                 # HTML template
-├── package.json               # Dependencies & scripts
-└── vite.config.js             # Vite configuration
-```
+A clean project archive ready for distribution is available at:
+`regalux_ai_suite.zip` (root directory, ~24.5 MB, excluding `node_modules`, `venv`, and build artifacts).
 
 ---
 
-## 🗺️ Upcoming Features & Roadmap
+## 10. Mandatory Disclaimer & Limitations
 
-We are actively working on expanding this project into a full restaurant ecosystem:
-
-- [ ] 📱 **Mobile Drawer Navigation**: Animated hamburger menu drawer for compact devices.
-- [ ] 🛒 **Online Order & Cart System**: Floating cart drawer with item counter.
-- [ ] 💳 **Payment Gateway Integration**: Razorpay & Stripe checkout support.
-- [ ] ☁️ **AWS Serverless Booking Backend**: Automated SMS & Email reservation confirmations via AWS SES & SNS.
-- [ ] 🌓 **Multi-Theme Switcher**: Switch between Indian, Italian, Cafe/Bakery, and Japanese dark/light presets.
-
----
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome!
-Feel free to check the [issues page](https://github.com/santoshjena6/kadappa-cafe/issues).
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## ⭐ Show Your Support & Follow For Upcoming Projects
-
-If this project saved you time or helped you build something awesome:
-
-- ⭐️ **Give this project a Star on GitHub!**
-- 👤 **Follow [@santoshjena6](https://github.com/santoshjena6)** on GitHub to get instant updates on upcoming open-source restaurant templates, UI libraries, and full-stack solutions!
-- 💬 **Share feedback** or tag us on your restaurant's live site!
-
----
-
-## 👨‍💻 Author
-
-**Santosh Jena**
-- GitHub: [@santoshjena6](https://github.com/santoshjena6)
-- Email: santoshjena7991@gmail.com
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** - you are free to use it for personal, commercial, and client restaurant projects!
+> [!WARNING]
+> **SYNTHETIC RESEARCH NOTICE:** All personas, survey answers, conversational replies, and adoption scores generated by REGALUX AI are algorithmic simulations designed for exploratory hypothesis testing. They do **not** represent statistically verified empirical customer feedback or measured market demand. Real-world validation (A/B testing, pilot user interviews, smoke tests) is strongly recommended before committing capital to production deployment.
