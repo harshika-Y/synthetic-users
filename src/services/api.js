@@ -85,7 +85,18 @@ export const api = {
   }),
 
   // Surveys
-  getSurveyResults: (surveyId) => request(`/surveys/${surveyId}/results`),
+  getSurveyResults: (surveyId, params) => {
+    const query = params ? `?${new URLSearchParams(params).toString()}` : '';
+    return request(`/surveys/${surveyId}/results${query}`);
+  },
+  getSurveyMatrix: (surveyId, params) => {
+    const query = params ? `?${new URLSearchParams(params).toString()}` : '';
+    return request(`/surveys/${surveyId}/results${query}`);
+  },
+  runCustomSurvey: (data) => request('/surveys/run-custom', {
+    method: 'POST',
+    body: JSON.stringify(data)
+  }),
   createSurvey: (expId, data) => request(`/experiments/${expId}/surveys`, {
     method: 'POST',
     body: JSON.stringify(data)

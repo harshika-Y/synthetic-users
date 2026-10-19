@@ -509,16 +509,20 @@ class PersonaEngine:
                 avatar = pool_entry[2]
                 age = max(20, min(68, base_age + (i % 7) - 3))
             else:
-                # Dynamically generate unique Indian name if candidates run out (e.g. count=20, 50, 100)
+                # Dynamically generate unique Indian name if candidates run out (e.g. count=20, 50, 100, 200, 500)
                 is_female = (i % 2 == 1)
                 f_pool = INDIAN_FIRST_NAMES_FEMALE if is_female else INDIAN_FIRST_NAMES_MALE
                 fn = f_pool[(i // len(INDIAN_LAST_NAMES)) % len(f_pool)]
                 ln = INDIAN_LAST_NAMES[i % len(INDIAN_LAST_NAMES)]
                 name = f"{fn} {ln}"
-                while name in used_names:
+                attempts = 0
+                while name in used_names and attempts < 60:
                     fn = random.choice(f_pool)
                     ln = random.choice(INDIAN_LAST_NAMES)
                     name = f"{fn} {ln}"
+                    attempts += 1
+                if name in used_names:
+                    name = f"{fn} {ln} ({i + 1})"
                 used_names.add(name)
                 age = 22 + ((i * 7) % 44)
                 avatar = PORTRAIT_AVATARS[i % len(PORTRAIT_AVATARS)]

@@ -33,22 +33,28 @@ def create_experiment(exp_in: ExperimentCreate, db: Session = Depends(get_db), c
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
 
-    selected_personas = exp_in.selected_persona_ids
+    # Resolve selected personas: single persona, selected personas, or all personas
+    selected_personas = exp_in.selected_persona_ids or []
+    if not selected_personas and exp_in.cohort_definition:
+        selected_personas = exp_in.cohort_definition.get("persona_ids", [])
     if not selected_personas:
-        # Default to all available personas
+        # Default to all available personas if none specified
         all_p = db.query(Persona).all()
         selected_personas = [p.id for p in all_p]
+
+    primary_q = exp_in.primary_question or exp_in.primary_research_question or "Validation Study"
+    configured_questions = exp_in.questions_config or exp_in.questions or []
 
     exp = Experiment(
         workspace_id=ws.id,
         product_id=product.id,
         title=exp_in.title,
         objective=exp_in.objective,
-        primary_question=exp_in.primary_question,
+        primary_question=primary_q,
         method=exp_in.method or "both",
         status="draft",
         selected_persona_ids=selected_personas,
-        questions_config=exp_in.questions_config or []
+        questions_config=configured_questions
     )
     db.add(exp)
     db.commit()
@@ -58,62 +64,65 @@ def create_experiment(exp_in: ExperimentCreate, db: Session = Depends(get_db), c
     survey = Survey(
         experiment_id=exp.id,
         title=f"Survey: {exp.title}",
-        description=f"Automated persona survey testing {product.name}",
+        description=f"Targeted persona survey testing {product.name}",
         status="pending"
     )
     db.add(survey)
     db.commit()
     db.refresh(survey)
 
-    # Default questions if none provided
-    questions = exp_in.questions_config
+    # Default questions only if user provided none
+    questions = configured_questions
     if not questions:
         questions = [
             {
-                "question_text": "How likely are you to use a 30-minute food delivery service during your workday?",
+                "question_text": f"How likely are you to use a 30-minute express breakfast delivery service from {product.name}?",
                 "question_type": "rating_scale",
                 "options": ["1 - Very Unlikely", "2 - Unlikely", "3 - Neutral", "4 - Likely", "5 - Very Likely"],
                 "required": True,
                 "order_idx": 1
             },
             {
-                "question_text": "Is a ₹99 delivery fee acceptable for guaranteed 30-minute delivery?",
+                "question_text": "Is a ₹99 delivery fee acceptable for guaranteed 30-minute delivery SLA?",
                 "question_type": "single_choice",
                 "options": ["Completely Acceptable", "Acceptable if SLA is guaranteed", "Neutral / Conditional", "Unacceptable / Too High"],
                 "required": True,
                 "order_idx": 2
             },
             {
-                "question_text": "How important is a dedicated, dietician-verified healthy food section to your ordering decisions?",
+                "question_text": "How important is a dedicated, nutrient-verified healthy South Indian food section (millet idlis, low-GI) to your ordering decisions?",
                 "question_type": "rating_scale",
                 "options": ["1", "2", "3", "4", "5"],
                 "required": True,
                 "order_idx": 3
             },
             {
-                "question_text": "Would you subscribe to a monthly pass (₹199/mo) offering unlimited free 30-min deliveries?",
+                "question_text": "Would you subscribe to a monthly morning pass (₹199/mo) offering unlimited free 30-min deliveries?",
                 "question_type": "single_choice",
                 "options": ["Very Likely", "Moderately Likely", "Unlikely"],
                 "required": True,
                 "order_idx": 4
             },
             {
-                "question_text": "What is your single biggest concern or barrier regarding adopting SwiftBite?",
+                "question_text": f"What is your single biggest concern or barrier regarding adopting {product.name}?",
                 "question_type": "open_ended",
                 "options": [],
                 "required": True,
                 "order_idx": 5
             }
         ]
+        # Keep exp questions_config updated
+        exp.questions_config = questions
+        db.commit()
 
-    for q in questions:
+    for idx, q in enumerate(questions):
         sq = SurveyQuestion(
             survey_id=survey.id,
             question_text=q.get("question_text"),
             question_type=q.get("question_type", "single_choice"),
             options=q.get("options", []),
             required=q.get("required", True),
-            order_idx=q.get("order_idx", 0)
+            order_idx=q.get("order_idx", idx + 1)
         )
         db.add(sq)
     

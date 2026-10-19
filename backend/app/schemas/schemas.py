@@ -133,10 +133,13 @@ class ExperimentCreate(BaseModel):
     product_id: str
     title: str
     objective: str
-    primary_question: str
+    primary_question: Optional[str] = None
+    primary_research_question: Optional[str] = None
     method: Optional[str] = "both"
-    selected_persona_ids: List[str] = []
+    selected_persona_ids: Optional[List[str]] = []
+    cohort_definition: Optional[Dict[str, Any]] = None
     questions_config: Optional[List[Dict[str, Any]]] = []
+    questions: Optional[List[Dict[str, Any]]] = None
 
 class ExperimentOut(BaseModel):
     id: str
@@ -158,7 +161,7 @@ class ExperimentOut(BaseModel):
 # Survey
 class SurveyQuestionCreate(BaseModel):
     question_text: str
-    question_type: str # single_choice, multiple_choice, yes_no, rating_scale, likert, open_ended, ranking
+    question_type: str = "single_choice" # single_choice, multiple_choice, yes_no, rating_scale, likert, open_ended, ranking
     options: List[str] = []
     required: bool = True
     order_idx: int = 0
@@ -167,6 +170,14 @@ class SurveyCreate(BaseModel):
     title: str
     description: Optional[str] = None
     questions: List[SurveyQuestionCreate]
+
+class SurveyRunCustomRequest(BaseModel):
+    experiment_id: Optional[str] = None
+    product_id: Optional[str] = None
+    title: Optional[str] = "Custom Targeted Persona Survey"
+    persona_scope: str = "all" # "single", "selected", "all"
+    persona_ids: Optional[List[str]] = []
+    questions: List[Dict[str, Any]] = []
 
 class SurveyResponseOut(BaseModel):
     id: str

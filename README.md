@@ -1,11 +1,14 @@
 # REGALUX AI — Synthetic User Research Intelligence
 
 > **AI-Powered Synthetic User Research & Product Validation Platform**  
-> *Exclusive, Royal Obsidian + Champagne Gold + Royal Emerald Digital Research Suite*
+> *Royal Emerald Digital Research Suite with Dynamic Personas & Targeted Survey Simulation*
 
-![REGALUX AI Badge](https://img.shields.io/badge/Architecture-Full--Stack%20FastAPI%20%2B%20React-D6B66F)
+[![Agile Documentation](https://img.shields.io/badge/Agile%20Documentation-Scrum%20%26%20Kanban-10B981?style=flat&logo=jira)](AGILE_DOCUMENTATION.md)
+![Architecture](https://img.shields.io/badge/Architecture-Full--Stack%20FastAPI%20%2B%20React-10B981)
 ![Testing Suite](https://img.shields.io/badge/Test%20Suite-100%25%20Passing-34D399)
-![License](https://img.shields.io/badge/Edition-Executive%20Enterprise-123D32)
+![License](https://img.shields.io/badge/License-Apache--2.0-123D32)
+
+📄 **[View Complete Agile Project Documentation (AGILE_DOCUMENTATION.md)](AGILE_DOCUMENTATION.md)**
 
 ---
 

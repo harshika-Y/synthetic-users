@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   FlaskConical, Sparkles, Check, ArrowRight, ArrowLeft, 
-  Users, Layers, Sliders, Play, Trash2, Plus, Info, RefreshCw
+  Users, Layers, Sliders, Play, Trash2, Plus, Info, RefreshCw,
+  User, Search
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -16,11 +17,11 @@ const STEPS = [
 ];
 
 const DEFAULT_QUESTIONS = [
-  { question_text: "How acceptable is a ₹99 flat delivery fee for guaranteed 30-minute arrival?", question_type: "single_choice" },
-  { question_text: "Would you subscribe to a ₹199/month unlimited morning breakfast pass?", question_type: "rating_scale" },
-  { question_text: "How important is verified low-glycemic / foxtail millet nutritional information on your breakfast?", question_type: "likert" },
-  { question_text: "Does real-time rider tracking reduce meeting calendar anxiety during morning sprints?", question_type: "yes_no" },
-  { question_text: "What is your single biggest frustration when ordering breakfast on food delivery apps?", question_type: "open_ended" }
+  { question_text: "How acceptable is a ₹99 flat delivery fee for guaranteed 30-minute arrival?", question_type: "single_choice", options: ["Completely Acceptable", "Acceptable if SLA is guaranteed", "Neutral", "Unacceptable"] },
+  { question_text: "Would you subscribe to a ₹199/month unlimited morning breakfast pass?", question_type: "rating_scale", options: [] },
+  { question_text: "How important is verified low-glycemic / foxtail millet nutritional information on your breakfast?", question_type: "likert", options: [] },
+  { question_text: "Does real-time rider tracking reduce meeting calendar anxiety during morning sprints?", question_type: "yes_no", options: [] },
+  { question_text: "What is your single biggest frustration when ordering breakfast on food delivery apps?", question_type: "open_ended", options: [] }
 ];
 
 const ExperimentBuilder = () => {
@@ -37,6 +38,8 @@ const ExperimentBuilder = () => {
   const [objective, setObjective] = useState("Validate 30-min express delivery and evaluate ₹199/mo Morning Pass adoption across Bhubaneswar and Bangalore working professionals.");
   const [primaryQuestion, setPrimaryQuestion] = useState("Will corporate breakfast consumers adopt a ₹199/mo morning delivery pass for guaranteed 30-min hot South Indian breakfast?");
   const [selectedPersonaIds, setSelectedPersonaIds] = useState([]);
+  const [personaScope, setPersonaScope] = useState("all"); // "all", "selected", "single"
+  const [personaSearch, setPersonaSearch] = useState("");
   const [method, setMethod] = useState("both"); // "survey", "interview", "both"
   const [questions, setQuestions] = useState(DEFAULT_QUESTIONS);
 
@@ -67,17 +70,34 @@ const ExperimentBuilder = () => {
   }, []);
 
   const handleTogglePersona = (id) => {
-    if (selectedPersonaIds.includes(id)) {
-      setSelectedPersonaIds(selectedPersonaIds.filter(pid => pid !== id));
+    if (personaScope === "single") {
+      setSelectedPersonaIds([id]);
     } else {
-      setSelectedPersonaIds([...selectedPersonaIds, id]);
+      if (selectedPersonaIds.includes(id)) {
+        setSelectedPersonaIds(selectedPersonaIds.filter(pid => pid !== id));
+      } else {
+        setSelectedPersonaIds([...selectedPersonaIds, id]);
+      }
+    }
+  };
+
+  const handleScopeSelect = (scope) => {
+    setPersonaScope(scope);
+    if (scope === "all") {
+      setSelectedPersonaIds(personas.map(p => p.id));
+    } else if (scope === "single") {
+      if (selectedPersonaIds.length > 0) {
+        setSelectedPersonaIds([selectedPersonaIds[0]]);
+      } else if (personas.length > 0) {
+        setSelectedPersonaIds([personas[0].id]);
+      }
     }
   };
 
   const handleAddQuestion = () => {
     setQuestions([
       ...questions,
-      { question_text: "New evaluated product hypothesis question...", question_type: "rating_scale" }
+      { question_text: "New evaluated product hypothesis question...", question_type: "rating_scale", options: [] }
     ]);
   };
 
@@ -100,8 +120,10 @@ const ExperimentBuilder = () => {
         product_id: selectedProductId,
         title,
         objective,
+        primary_question: primaryQuestion,
         primary_research_question: primaryQuestion,
         method,
+        selected_persona_ids: selectedPersonaIds,
         cohort_definition: {
           persona_ids: selectedPersonaIds,
           count: selectedPersonaIds.length
@@ -110,7 +132,8 @@ const ExperimentBuilder = () => {
           { statement: "30-minute delivery SLA increases breakfast conversion by 45%", expected_direction: "positive" },
           { statement: "₹99 standalone delivery fee causes >35% drop-off unless covered by ₹199 Morning Pass", expected_direction: "negative" }
         ],
-        questions
+        questions_config: questions,
+        questions: questions
       };
 
       const created = await api.createExperiment(expPayload);
@@ -156,12 +179,12 @@ const ExperimentBuilder = () => {
           return (
             <div
               key={idx}
-              className={`p-2.5 rounded-lg border text-center transition-all ${
+              className={`p-2.5 rounded-xl border text-center transition-all ${
                 isActive 
-                  ? 'bg-white text-[#062319] border-white font-bold text-xs shadow-md' 
+                  ? 'btn-primary text-xs font-bold shadow-lg shadow-cyan-500/20' 
                   : isDone 
-                  ? 'bg-[#0E3D2E] border-white/30 text-[#34D399] text-xs font-semibold' 
-                  : 'bg-[#0A3324] border-white/10 text-white/50 text-xs'
+                  ? 'bg-cyan-950/80 border-cyan-500/40 text-cyan-300 text-xs font-semibold' 
+                  : 'bg-slate-900/80 border-white/10 text-slate-400 text-xs'
               }`}
             >
               <span className="truncate block">{step}</span>
@@ -171,27 +194,27 @@ const ExperimentBuilder = () => {
       </div>
 
       {/* Stepper Content Body */}
-      <div className="p-8 rounded-2xl bg-[#0A3324] border border-white/20 shadow-xl">
+      <div className="p-8 rounded-3xl card-3d shadow-2xl">
         {/* Step 0: Product Definition */}
         {currentStep === 0 && (
           <div className="space-y-6">
             <div>
-              <label className="block text-xs font-semibold text-[#A7F3D0] uppercase tracking-wider mb-2">
+              <label className="block text-xs font-semibold text-cyan-400 uppercase tracking-wider mb-2">
                 Select Researched Product
               </label>
               <select
                 value={selectedProductId}
                 onChange={(e) => setSelectedProductId(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-lg bg-[#062319] border border-white/20 text-xs text-white focus:outline-none focus:border-white"
+                className="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-700/80 text-xs text-white focus:outline-none focus:border-cyan-400"
               >
                 {products.map(p => (
-                  <option key={p.id} value={p.id} className="bg-[#062319] text-white">{p.name} ({p.category})</option>
+                  <option key={p.id} value={p.id} className="bg-slate-900 text-white">{p.name} ({p.category})</option>
                 ))}
               </select>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#A7F3D0] uppercase tracking-wider mb-2">
+              <label className="block text-xs font-semibold text-cyan-400 uppercase tracking-wider mb-2">
                 Experiment Title
               </label>
               <input
@@ -231,47 +254,101 @@ const ExperimentBuilder = () => {
         {/* Step 1: Target Personas */}
         {currentStep === 1 && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-[#A7F3D0] uppercase tracking-wider">
-                Select Personas to Participate ({selectedPersonaIds.length} Selected)
-              </span>
-              <button
-                type="button"
-                onClick={() => setSelectedPersonaIds(personas.map(p => p.id))}
-                className="text-xs text-white underline hover:text-[#34D399] cursor-pointer"
-              >
-                Select All
-              </button>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
+              <div>
+                <span className="text-xs font-semibold text-[#A7F3D0] uppercase tracking-wider block">
+                  Select Persona Targeting Mode ({selectedPersonaIds.length} Selected)
+                </span>
+                <span className="text-[11px] text-[#E6F4EA]">
+                  Target an individual person, choose a custom subset, or engage the full cohort.
+                </span>
+              </div>
+
+              {/* 3 Scope Buttons */}
+              <div className="flex items-center gap-1.5 self-start sm:self-auto">
+                <button
+                  type="button"
+                  onClick={() => handleScopeSelect("single")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                    personaScope === "single"
+                      ? 'bg-white text-[#062319] shadow-md'
+                      : 'bg-[#062319] border border-white/20 text-[#E6F4EA] hover:text-white'
+                  }`}
+                >
+                  <User className="w-3.5 h-3.5" />
+                  <span>Single Person (1)</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleScopeSelect("selected")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                    personaScope === "selected"
+                      ? 'bg-white text-[#062319] shadow-md'
+                      : 'bg-[#062319] border border-white/20 text-[#E6F4EA] hover:text-white'
+                  }`}
+                >
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>Selected ({selectedPersonaIds.length})</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleScopeSelect("all")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                    personaScope === "all"
+                      ? 'bg-white text-[#062319] shadow-md'
+                      : 'bg-[#062319] border border-white/20 text-[#E6F4EA] hover:text-white'
+                  }`}
+                >
+                  <Users className="w-3.5 h-3.5" />
+                  <span>All ({personas.length})</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Persona Search Filter */}
+            <div className="relative">
+              <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-white/50" />
+              <input
+                type="text"
+                value={personaSearch}
+                onChange={(e) => setPersonaSearch(e.target.value)}
+                placeholder="Search personas by name, occupation, or segment..."
+                className="w-full pl-8 pr-3 py-1.5 rounded-lg bg-[#062319] border border-white/20 text-xs text-white focus:outline-none focus:border-white"
+              />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-96 overflow-y-auto pr-1">
-              {personas.map((p) => {
-                const isSelected = selectedPersonaIds.includes(p.id);
-                return (
-                  <div
-                    key={p.id}
-                    onClick={() => handleTogglePersona(p.id)}
-                    className={`p-3.5 rounded-xl border flex items-center justify-between cursor-pointer transition-all ${
-                      isSelected 
-                        ? 'bg-[#0E3D2E] border-white text-white shadow-md' 
-                        : 'bg-[#062319] border-white/10 text-[#E6F4EA] hover:border-white/30'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3 truncate">
-                      <img src={p.avatar} alt={p.name} className="w-8 h-8 rounded-lg object-cover border border-white/30" />
-                      <div className="truncate">
-                        <p className="text-xs font-bold truncate text-white">{p.name}</p>
-                        <p className="text-[10px] text-[#A7F3D0] truncate">{p.segment}</p>
+              {personas
+                .filter(p => !personaSearch || p.name.toLowerCase().includes(personaSearch.toLowerCase()) || p.segment.toLowerCase().includes(personaSearch.toLowerCase()) || p.occupation.toLowerCase().includes(personaSearch.toLowerCase()))
+                .map((p) => {
+                  const isSelected = selectedPersonaIds.includes(p.id);
+                  return (
+                    <div
+                      key={p.id}
+                      onClick={() => handleTogglePersona(p.id)}
+                      className={`p-3.5 rounded-xl border flex items-center justify-between cursor-pointer transition-all ${
+                        isSelected 
+                          ? 'bg-[#0E3D2E] border-white text-white shadow-md' 
+                          : 'bg-[#062319] border-white/10 text-[#E6F4EA] hover:border-white/30'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3 truncate">
+                        <img src={p.avatar} alt={p.name} className="w-8 h-8 rounded-lg object-cover border border-white/30" />
+                        <div className="truncate">
+                          <p className="text-xs font-bold truncate text-white">{p.name}</p>
+                          <p className="text-[10px] text-[#A7F3D0] truncate">{p.segment}</p>
+                        </div>
                       </div>
+                      <span className={`w-4 h-4 rounded flex items-center justify-center border text-[10px] ${
+                        isSelected ? 'bg-white border-white text-[#062319] font-bold' : 'border-white/30'
+                      }`}>
+                        {isSelected ? '✓' : ''}
+                      </span>
                     </div>
-                    <span className={`w-4 h-4 rounded flex items-center justify-center border text-[10px] ${
-                      isSelected ? 'bg-white border-white text-[#062319] font-bold' : 'border-white/30'
-                    }`}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
           </div>
         )}
@@ -314,25 +391,50 @@ const ExperimentBuilder = () => {
         {/* Step 3: Questions Config */}
         {currentStep === 3 && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-[#A7F3D0] uppercase tracking-wider">
-                Configure Survey Questions ({questions.length})
-              </span>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <span className="text-xs font-semibold text-[#A7F3D0] uppercase tracking-wider block">
+                  Configure Survey Questions ({questions.length})
+                </span>
+                <span className="text-[11px] text-[#E6F4EA]">
+                  Tailor hypothesis testing with your exact questions and options.
+                </span>
+              </div>
               <button
                 type="button"
                 onClick={handleAddQuestion}
-                className="px-3 py-1.5 rounded-lg bg-white text-[#062319] hover:bg-[#F0FDF4] text-xs font-bold flex items-center gap-1 cursor-pointer shadow-md"
+                className="px-3 py-1.5 rounded-lg bg-white text-[#062319] hover:bg-[#F0FDF4] text-xs font-bold flex items-center gap-1 cursor-pointer shadow-md self-start sm:self-auto"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Add Question</span>
               </button>
             </div>
 
+            {/* Quick Question Presets */}
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <span className="text-[10px] uppercase font-bold text-[#A7F3D0]">Quick Add:</span>
+              {[
+                { label: "+ Pricing SLA (₹99)", q: "Is a ₹99 flat fee acceptable for guaranteed 30-min arrival?", type: "single_choice", options: ["Completely Acceptable", "Acceptable", "Neutral", "Unacceptable"] },
+                { label: "+ Morning Pass (₹199)", q: "Would you subscribe to a ₹199/month unlimited morning delivery pass?", type: "rating_scale", options: [] },
+                { label: "+ Healthy Millets", q: "How important is verified low-glycemic foxtail millet nutritional info?", type: "likert", options: [] },
+                { label: "+ Live GPS Tracking", q: "Does real-time pan-to-porch rider tracking reduce meeting anxiety?", type: "yes_no", options: [] }
+              ].map((p, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setQuestions([...questions, { question_text: p.q, question_type: p.type, options: p.options }])}
+                  className="px-2.5 py-1 rounded-md bg-[#062319] hover:bg-[#0E3D2E] border border-white/20 text-xs text-[#E6F4EA] hover:text-white cursor-pointer transition-colors"
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
+
             <div className="space-y-3 max-h-96 overflow-y-auto pr-1">
               {questions.map((q, idx) => (
                 <div key={idx} className="p-4 rounded-xl bg-[#062319] border border-white/15 space-y-3">
                   <div className="flex items-center justify-between gap-3">
-                    <span className="w-6 h-6 rounded-full bg-[#0E3D2E] border border-white/30 flex items-center justify-center text-xs text-white font-bold">
+                    <span className="w-6 h-6 rounded-full bg-[#0E3D2E] border border-white/30 flex items-center justify-center text-xs text-white font-bold shrink-0">
                       {idx + 1}
                     </span>
                     <input
@@ -343,33 +445,53 @@ const ExperimentBuilder = () => {
                         copy[idx].question_text = e.target.value;
                         setQuestions(copy);
                       }}
-                      className="flex-1 px-3 py-1.5 rounded-lg bg-[#0A3324] border border-white/20 text-xs text-white focus:outline-none focus:border-white"
+                      className="flex-1 px-3 py-1.5 rounded-xl bg-slate-950/80 border border-slate-700/80 text-xs text-white focus:outline-none focus:border-cyan-400"
                     />
                     <button
                       onClick={() => handleRemoveQuestion(idx)}
-                      className="text-rose-400 hover:text-rose-300 p-1"
+                      className="text-rose-400 hover:text-rose-300 p-1 cursor-pointer"
+                      title="Remove question"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
 
-                  <div className="flex items-center gap-4 text-xs">
-                    <span className="text-[#A7F3D0]">Question Type:</span>
-                    <select
-                      value={q.question_type}
-                      onChange={(e) => {
-                        const copy = [...questions];
-                        copy[idx].question_type = e.target.value;
-                        setQuestions(copy);
-                      }}
-                      className="px-3 py-1 rounded bg-[#0A3324] border border-white/20 text-xs text-white focus:outline-none"
-                    >
-                      <option value="single_choice">Single Choice</option>
-                      <option value="rating_scale">Rating Scale (1-5)</option>
-                      <option value="likert">Likert Scale</option>
-                      <option value="yes_no">Yes / No</option>
-                      <option value="open_ended">Open Ended</option>
-                    </select>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                    <div className="flex items-center gap-3">
+                      <span className="text-cyan-300">Question Type:</span>
+                      <select
+                        value={q.question_type}
+                        onChange={(e) => {
+                          const copy = [...questions];
+                          copy[idx].question_type = e.target.value;
+                          setQuestions(copy);
+                        }}
+                        className="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-cyan-400"
+                      >
+                        <option value="single_choice">Single Choice</option>
+                        <option value="rating_scale">Rating Scale (1-5)</option>
+                        <option value="likert">Likert Scale</option>
+                        <option value="yes_no">Yes / No</option>
+                        <option value="open_ended">Open Ended</option>
+                      </select>
+                    </div>
+
+                    {q.question_type === "single_choice" && (
+                      <div className="flex items-center gap-2 flex-1 sm:justify-end">
+                        <span className="text-[#A7F3D0] text-[11px]">Options:</span>
+                        <input
+                          type="text"
+                          value={(q.options || []).join(", ")}
+                          onChange={(e) => {
+                            const copy = [...questions];
+                            copy[idx].options = e.target.value.split(",").map(s => s.trim()).filter(Boolean);
+                            setQuestions(copy);
+                          }}
+                          placeholder="e.g. High, Moderate, Low"
+                          className="w-44 px-2 py-1 rounded bg-[#062319] border border-white/20 text-[11px] text-white focus:outline-none focus:border-white"
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}

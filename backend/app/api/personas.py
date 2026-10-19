@@ -74,9 +74,13 @@ async def generate_personas(
         created_personas.append(p)
     
     db.commit()
-    for p in created_personas:
-        db.refresh(p)
-    return created_personas
+    if len(created_personas) <= 20:
+        for p in created_personas:
+            db.refresh(p)
+        return created_personas
+    else:
+        created_ids = [p.id for p in created_personas]
+        return db.query(Persona).filter(Persona.id.in_(created_ids)).all()
 
 @router.get("/{persona_id}", response_model=PersonaOut)
 def get_persona(persona_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
