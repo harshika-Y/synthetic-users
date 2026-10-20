@@ -1,0 +1,258 @@
+export const MENU_CATEGORIES = [
+  'All',
+  'Signature Dosas',
+  'Steamed Classics & Vadas',
+  'Thalis & Traditional Meals',
+  'Filter Coffee & Beverages',
+  'Desserts & Snacks'
+];
+
+export const MENU_ITEMS = [
+  // Signature Dosas
+  {
+    id: 'kdp-dosa-01',
+    name: 'Ghee Podi Masala Dosa',
+    category: 'Signature Dosas',
+    price: 140,
+    rating: 4.9,
+    reviewsCount: 320,
+    isVeg: true,
+    isBestseller: true,
+    description: 'Crispy golden rice crepe roasted in aromatic cow ghee, coated with our signature spice gun-powder (podi), stuffed with potato masala.',
+    prepTime: '15 mins',
+    calories: '340 kcal',
+    image: '/dosa.png'
+  },
+  {
+    id: 'kdp-dosa-02',
+    name: 'Mysore Masala Dosa',
+    category: 'Signature Dosas',
+    price: 150,
+    rating: 4.8,
+    reviewsCount: 280,
+    isVeg: true,
+    isBestseller: true,
+    description: 'Crispy dosa with internal spread of spicy garlic-red chili chutney, filled with potato sabzi and garnished with coriander butter.',
+    prepTime: '15 mins',
+    calories: '360 kcal',
+    image: '/dosa.png'
+  },
+  {
+    id: 'kdp-dosa-03',
+    name: 'Kadappa Karampodi Roast Dosa',
+    category: 'Signature Dosas',
+    price: 145,
+    rating: 4.9,
+    reviewsCount: 195,
+    isVeg: true,
+    isBestseller: false,
+    description: 'Authentic Rayalaseema style spicy red chili podi roast with shallots and cold-pressed sesame oil.',
+    prepTime: '12 mins',
+    calories: '320 kcal',
+    image: '/dosa.png'
+  },
+  {
+    id: 'kdp-dosa-04',
+    name: 'Onion Rava Masala Dosa',
+    category: 'Signature Dosas',
+    price: 130,
+    rating: 4.7,
+    reviewsCount: 160,
+    isVeg: true,
+    isBestseller: false,
+    description: 'Lacy, ultra-crispy semolina crepe infused with cumin seeds, crushed black pepper, finely chopped ginger, and roasted onions.',
+    prepTime: '18 mins',
+    calories: '310 kcal',
+    image: '/dosa.png'
+  },
+  {
+    id: 'kdp-dosa-05',
+    name: 'Royal Cheese Burst Podi Dosa',
+    category: 'Signature Dosas',
+    price: 175,
+    rating: 4.8,
+    reviewsCount: 210,
+    isVeg: true,
+    isBestseller: true,
+    description: 'Modern twist on tradition: loaded with molten Amul cheese, spicy gunpowder podi, and fresh herbs.',
+    prepTime: '15 mins',
+    calories: '420 kcal',
+    image: '/dosa.png'
+  },
+
+  // Steamed Classics & Vadas
+  {
+    id: 'kdp-idli-01',
+    name: 'Millet Idli Platter (3 pcs)',
+    category: 'Steamed Classics & Vadas',
+    price: 95,
+    rating: 4.9,
+    reviewsCount: 240,
+    isVeg: true,
+    isBestseller: true,
+    description: 'Nutritious foxtail & ragi steamed cakes, served with 3 artisan chutneys (coconut, tomato-onion, mint) and piping hot drumstick sambar.',
+    prepTime: '10 mins',
+    calories: '180 kcal',
+    image: '/idli.png'
+  },
+  {
+    id: 'kdp-idli-02',
+    name: 'Thatte Idli with Ghee & Chutney Pudi',
+    category: 'Steamed Classics & Vadas',
+    price: 85,
+    rating: 4.8,
+    reviewsCount: 185,
+    isVeg: true,
+    isBestseller: false,
+    description: 'Wide Bidadi-style plate idli drenched in melted country butter and spicy roasted lentil powder.',
+    prepTime: '10 mins',
+    calories: '230 kcal',
+    image: '/idli.png'
+  },
+  {
+    id: 'kdp-vada-01',
+    name: 'Crispy Sambar Medu Vada (2 pcs)',
+    category: 'Steamed Classics & Vadas',
+    price: 75,
+    rating: 4.8,
+    reviewsCount: 310,
+    isVeg: true,
+    isBestseller: true,
+    description: 'Golden fried crispy urad dal fritters soaked in aromatic shallot-coriander sambar, topped with fresh ghee.',
+    prepTime: '10 mins',
+    calories: '280 kcal',
+    image: '/vada.png'
+  },
+  {
+    id: 'kdp-idli-03',
+    name: 'Mini Ghee Sambar Button Idlis (14 pcs)',
+    category: 'Steamed Classics & Vadas',
+    price: 110,
+    rating: 4.9,
+    reviewsCount: 290,
+    isVeg: true,
+    isBestseller: true,
+    description: 'Fourteen bite-sized steamed idlis submerged in rich spiced Madras sambar and crowned with pure cow ghee.',
+    prepTime: '12 mins',
+    calories: '260 kcal',
+    image: '/idli.png'
+  },
+
+  // Thalis & Traditional Meals
+  {
+    id: 'kdp-thali-01',
+    name: 'Kadappa Royal Maharaja Feast Thali',
+    category: 'Thalis & Traditional Meals',
+    price: 260,
+    rating: 5.0,
+    reviewsCount: 420,
+    isVeg: true,
+    isBestseller: true,
+    description: 'Grand feast featuring steamed Sona Masoori rice, Poriyal, Kootu, Drumstick Sambar, Tomato Rasam, Vatha Kuzhambu, Curd, Appalam, Pickle, and Sweet Payasam.',
+    prepTime: '20 mins',
+    calories: '750 kcal',
+    image: '/thali.png'
+  },
+  {
+    id: 'kdp-meal-01',
+    name: 'Classic Bisibelebath with Boondi',
+    category: 'Thalis & Traditional Meals',
+    price: 120,
+    rating: 4.8,
+    reviewsCount: 215,
+    isVeg: true,
+    isBestseller: false,
+    description: 'Traditional Karnataka rice and lentil mash simmered with 18 freshly roasted spices, seasonal vegetables, cashews, and crunchy kara boondi.',
+    prepTime: '12 mins',
+    calories: '410 kcal',
+    image: '/meals.png'
+  },
+  {
+    id: 'kdp-meal-02',
+    name: 'Tempered Curd Rice with Pomegranate',
+    category: 'Thalis & Traditional Meals',
+    price: 90,
+    rating: 4.7,
+    reviewsCount: 170,
+    isVeg: true,
+    isBestseller: false,
+    description: 'Cooling probiotic rice gently blended with homemade yogurt, tempered with mustard, curry leaves, ginger, and fresh juicy pomegranate pearls.',
+    prepTime: '8 mins',
+    calories: '220 kcal',
+    image: '/meals.png'
+  },
+
+  // Filter Coffee & Beverages
+  {
+    id: 'kdp-drink-01',
+    name: 'Kumbakonam Degree Filter Coffee',
+    category: 'Filter Coffee & Beverages',
+    price: 55,
+    rating: 5.0,
+    reviewsCount: 650,
+    isVeg: true,
+    isBestseller: true,
+    description: 'Signature decoction brewed with 80:20 Arabica-chicory blend, frothed with thick full-cream milk in brass dabara-tumbler.',
+    prepTime: '5 mins',
+    calories: '90 kcal',
+    image: '/coffee.png'
+  },
+  {
+    id: 'kdp-drink-02',
+    name: 'Madurai Royal Jigarthanda',
+    category: 'Filter Coffee & Beverages',
+    price: 95,
+    rating: 4.9,
+    reviewsCount: 180,
+    isVeg: true,
+    isBestseller: true,
+    description: 'Traditional cooling dessert drink crafted from almond gum (badam pisin), nannari syrup, reduced milk (basundi), and rich ice cream.',
+    prepTime: '6 mins',
+    calories: '290 kcal',
+    image: '/coffee.png'
+  },
+  {
+    id: 'kdp-drink-03',
+    name: 'Spiced Buttermilk (Neer Moru)',
+    category: 'Filter Coffee & Beverages',
+    price: 45,
+    rating: 4.8,
+    reviewsCount: 130,
+    isVeg: true,
+    isBestseller: false,
+    description: 'Refreshing churned yogurt infused with crushed ginger, green chilies, cilantro, curry leaves, and asafoetida.',
+    prepTime: '5 mins',
+    calories: '50 kcal',
+    image: '/coffee.png'
+  },
+
+  // Desserts & Snacks
+  {
+    id: 'kdp-sweet-01',
+    name: 'Authentic Ghee Mysore Pak (2 pcs)',
+    category: 'Desserts & Snacks',
+    price: 80,
+    rating: 4.9,
+    reviewsCount: 220,
+    isVeg: true,
+    isBestseller: true,
+    description: 'Melt-in-mouth royal sweet made with roasted gram flour, pure country ghee, and caramelized sugar.',
+    prepTime: '5 mins',
+    calories: '320 kcal',
+    image: '/sweet.png'
+  },
+  {
+    id: 'kdp-sweet-02',
+    name: 'Elaneer Tender Coconut Payasam',
+    category: 'Desserts & Snacks',
+    price: 95,
+    rating: 4.9,
+    reviewsCount: 190,
+    isVeg: true,
+    isBestseller: true,
+    description: 'Silky dessert made from tender coconut pulp, condensed coconut milk, cardamom, and roasted cashews.',
+    prepTime: '5 mins',
+    calories: '240 kcal',
+    image: '/sweet.png'
+  }
+];

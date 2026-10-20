@@ -1,7 +1,74 @@
-import React from 'react';
-import { MapPin, Phone, Clock, Navigation, Mail, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { MapPin, Phone, Clock, Navigation, Mail, ArrowRight, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
 const Footer = () => {
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
+  const [newsletterMsg, setNewsletterMsg] = useState('');
+  const [isLocating, setIsLocating] = useState(false);
+
+  const GOOGLE_MAPS_URL = "https://www.google.com/maps/dir/?api=1&destination=Kadappa+Cafe,+Plot+1079%2F1110,+above+Lenskart,+Shampur,+Bhubaneswar,+Nuagan,+Odisha+751003";
+
+  const handleGetDirections = (e) => {
+    e.preventDefault();
+    const destinationQuery = encodeURIComponent(
+      "Kadappa Cafe, First Floor, Plot 1079/1110, above Lenskart, near HDFC Bank, Mouza, Shampur, Bhubaneswar, Nuagan, Odisha 751003"
+    );
+
+    if (typeof navigator !== 'undefined' && navigator.geolocation) {
+      setIsLocating(true);
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setIsLocating(false);
+          const { latitude, longitude } = pos.coords;
+          window.open(
+            `https://www.google.com/maps/dir/?api=1&origin=${latitude},${longitude}&destination=${destinationQuery}&travelmode=driving`,
+            '_blank',
+            'noopener,noreferrer'
+          );
+        },
+        (err) => {
+          setIsLocating(false);
+          window.open(GOOGLE_MAPS_URL, '_blank', 'noopener,noreferrer');
+        },
+        { timeout: 6000 }
+      );
+    } else {
+      window.open(GOOGLE_MAPS_URL, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  const handleNewsletterSubmit = (e) => {
+    e.preventDefault();
+    const email = newsletterEmail.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (!email) {
+      setNewsletterStatus('error');
+      setNewsletterMsg('Please enter your email address.');
+      return;
+    }
+    if (!emailRegex.test(email)) {
+      setNewsletterStatus('error');
+      setNewsletterMsg('Please enter a valid email address (e.g. name@gmail.com).');
+      return;
+    }
+
+    setNewsletterStatus('loading');
+    setTimeout(() => {
+      try {
+        const existing = JSON.parse(localStorage.getItem('kadappa_newsletter_subscribers') || '[]');
+        if (!existing.includes(email)) {
+          existing.push(email);
+          localStorage.setItem('kadappa_newsletter_subscribers', JSON.stringify(existing));
+        }
+      } catch (err) {}
+      setNewsletterStatus('success');
+      setNewsletterMsg('🎉 You\'re subscribed! Exclusive offer code KADAPPA100 is now active.');
+      setNewsletterEmail('');
+    }, 600);
+  };
+
   return (
     <footer style={{ 
       position: 'relative',
@@ -52,12 +119,96 @@ const Footer = () => {
           <p style={{ fontSize: '13px', lineHeight: '1.6', marginBottom: '16px', maxWidth: '280px', color: 'rgba(160, 179, 166, 0.7)' }}>
             Join our newsletter for exclusive offers, secret recipes, and new menu drops.
           </p>
-          <div style={{ display: 'flex', width: '100%', maxWidth: '300px', position: 'relative' }}>
-            <input type="email" placeholder="Enter your email address" style={{ width: '100%', padding: '12px 45px 12px 16px', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '30px', color: '#FFF', fontSize: '13px', outline: 'none' }} />
-            <button style={{ position: 'absolute', right: '4px', top: '4px', bottom: '4px', width: '36px', borderRadius: '50%', backgroundColor: 'var(--color-tiger-gold)', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000', cursor: 'pointer', transition: 'transform 0.2s' }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>
-              <ArrowRight size={16} />
-            </button>
-          </div>
+
+          {/* Newsletter Form */}
+          <form onSubmit={handleNewsletterSubmit} style={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '300px' }}>
+            <div style={{ display: 'flex', width: '100%', position: 'relative' }}>
+              <input 
+                type="email" 
+                value={newsletterEmail}
+                onChange={(e) => {
+                  setNewsletterEmail(e.target.value);
+                  if (newsletterStatus === 'error') setNewsletterStatus('idle');
+                }}
+                placeholder="Enter your email address" 
+                style={{ 
+                  width: '100%', 
+                  padding: '12px 45px 12px 16px', 
+                  backgroundColor: 'rgba(0,0,0,0.3)', 
+                  border: newsletterStatus === 'error' ? '1px solid #F87171' : '1px solid rgba(255,255,255,0.15)', 
+                  borderRadius: '30px', 
+                  color: '#FFF', 
+                  fontSize: '13px', 
+                  outline: 'none',
+                  transition: 'border-color 0.2s'
+                }} 
+              />
+              <button 
+                type="submit"
+                disabled={newsletterStatus === 'loading'}
+                title="Subscribe to newsletter"
+                style={{ 
+                  position: 'absolute', 
+                  right: '4px', 
+                  top: '4px', 
+                  bottom: '4px', 
+                  width: '36px', 
+                  borderRadius: '50%', 
+                  backgroundColor: 'var(--color-tiger-gold)', 
+                  border: 'none', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  color: '#000', 
+                  cursor: newsletterStatus === 'loading' ? 'wait' : 'pointer', 
+                  transition: 'transform 0.2s' 
+                }} 
+                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'} 
+                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+              >
+                {newsletterStatus === 'loading' ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : (
+                  <ArrowRight size={16} />
+                )}
+              </button>
+            </div>
+
+            {newsletterStatus === 'success' && (
+              <div style={{ 
+                marginTop: '10px', 
+                padding: '8px 12px', 
+                backgroundColor: 'rgba(52, 211, 153, 0.15)', 
+                border: '1px solid #34D399', 
+                borderRadius: '12px', 
+                color: '#34D399', 
+                fontSize: '11px', 
+                lineHeight: '1.4', 
+                textAlign: 'left',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}>
+                <CheckCircle2 size={14} style={{ flexShrink: 0 }} />
+                <span>{newsletterMsg}</span>
+              </div>
+            )}
+
+            {newsletterStatus === 'error' && (
+              <div style={{ 
+                marginTop: '8px', 
+                color: '#F87171', 
+                fontSize: '11px', 
+                textAlign: 'left',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}>
+                <AlertCircle size={13} style={{ flexShrink: 0 }} />
+                <span>{newsletterMsg}</span>
+              </div>
+            )}
+          </form>
         </div>
 
         {/* Center: Logo & Info */}
@@ -91,28 +242,61 @@ const Footer = () => {
           <div style={{ width: '50px', height: '2px', backgroundColor: 'var(--color-tiger-gold)', marginBottom: '30px' }}></div>
           
           <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', marginBottom: '20px' }}>
-            <div style={{color: 'var(--color-tiger-gold)', width: '35px', height: '35px', minWidth: '35px', border: '1px solid rgba(255,193,7,0.3)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,193,7,0.05)'}}>
+            <a 
+              href={GOOGLE_MAPS_URL} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              title="Open location on Google Maps"
+              style={{color: 'var(--color-tiger-gold)', width: '35px', height: '35px', minWidth: '35px', border: '1px solid rgba(255,193,7,0.3)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,193,7,0.05)', transition: 'all 0.2s'}}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(255,193,7,0.15)'; e.currentTarget.style.borderColor = 'var(--color-tiger-gold)'; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'rgba(255,193,7,0.05)'; e.currentTarget.style.borderColor = 'rgba(255,193,7,0.3)'; }}
+            >
               <MapPin size={16} />
-            </div>
-            <p style={{ color: '#A0B3A6', lineHeight: '1.7', maxWidth: '300px', fontSize: '14px' }}>
+            </a>
+            <a 
+              href={GOOGLE_MAPS_URL} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              title="Click to view route on Google Maps"
+              style={{ color: '#A0B3A6', lineHeight: '1.7', maxWidth: '300px', fontSize: '14px', textDecoration: 'none', transition: 'color 0.2s' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#FFF'}
+              onMouseLeave={e => e.currentTarget.style.color = '#A0B3A6'}
+            >
               First Floor, Plot 1079/1110,<br/>
               above Lenskart, near HDFC Bank,<br/>
               Mouza, Shampur, Bhubaneswar,<br/>
               Nuagan, Odisha 751003
-            </p>
+            </a>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '30px', paddingLeft: '51px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#A0B3A6', fontSize: '14px' }}>
+            <a href="tel:+919876543210" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#A0B3A6', fontSize: '14px', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--color-tiger-gold)'} onMouseLeave={e => e.currentTarget.style.color = '#A0B3A6'}>
               <Phone size={14} color="var(--color-tiger-gold)" /> +91 98765 43210
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#A0B3A6', fontSize: '14px' }}>
+            </a>
+            <a href="mailto:hello@kadappacafe.com" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#A0B3A6', fontSize: '14px', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--color-tiger-gold)'} onMouseLeave={e => e.currentTarget.style.color = '#A0B3A6'}>
               <Mail size={14} color="var(--color-tiger-gold)" /> hello@kadappacafe.com
-            </div>
+            </a>
           </div>
 
-          <a href="#" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', color: '#000', backgroundColor: 'var(--color-tiger-gold)', textDecoration: 'none', borderRadius: '30px', padding: '12px 28px', fontSize: '12px', fontWeight: '600', letterSpacing: '0.1em', transition: 'all 0.3s ease', boxShadow: '0 4px 15px rgba(255,193,7,0.3)' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(255,193,7,0.4)' }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(255,193,7,0.3)' }}>
-            <Navigation size={14} /> GET DIRECTIONS
+          <a 
+            href={GOOGLE_MAPS_URL} 
+            onClick={handleGetDirections}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Get instant GPS directions to Kadappa Café"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', color: '#000', backgroundColor: 'var(--color-tiger-gold)', textDecoration: 'none', borderRadius: '30px', padding: '12px 28px', fontSize: '12px', fontWeight: '600', letterSpacing: '0.1em', transition: 'all 0.3s ease', boxShadow: '0 4px 15px rgba(255,193,7,0.3)', cursor: 'pointer' }} 
+            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(255,193,7,0.4)' }} 
+            onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(255,193,7,0.3)' }}
+          >
+            {isLocating ? (
+              <>
+                <Loader2 size={14} className="animate-spin" /> GETTING LOCATION...
+              </>
+            ) : (
+              <>
+                <Navigation size={14} /> GET DIRECTIONS
+              </>
+            )}
           </a>
         </div>
 

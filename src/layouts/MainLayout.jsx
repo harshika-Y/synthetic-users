@@ -2,6 +2,8 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import CartDrawer from '../components/CartDrawer';
+import BillModal from '../components/BillModal';
 
 const MainLayout = () => {
   return (
@@ -11,6 +13,12 @@ const MainLayout = () => {
         <Outlet />
       </main>
       <Footer />
+      
+      {/* Customer Cart Drawer & Delivery Checkout */}
+      <CartDrawer />
+
+      {/* Official Tax Invoice & Itemized Bill Modal */}
+      <BillModal />
     </div>
   );
 };

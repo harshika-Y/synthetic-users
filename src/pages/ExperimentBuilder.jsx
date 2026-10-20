@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   FlaskConical, Sparkles, Check, ArrowRight, ArrowLeft, 
@@ -42,6 +42,8 @@ const ExperimentBuilder = () => {
   const [personaSearch, setPersonaSearch] = useState("");
   const [method, setMethod] = useState("both"); // "survey", "interview", "both"
   const [questions, setQuestions] = useState(DEFAULT_QUESTIONS);
+  const questionsContainerRef = useRef(null);
+  const [lastAddedIndex, setLastAddedIndex] = useState(null);
 
   // Execution State
   const [isRunning, setIsRunning] = useState(false);
@@ -95,13 +97,32 @@ const ExperimentBuilder = () => {
   };
 
   const handleAddQuestion = () => {
+    const newIdx = questions.length;
     setQuestions([
       ...questions,
-      { question_text: "New evaluated product hypothesis question...", question_type: "rating_scale", options: [] }
+      { question_text: "", question_type: "rating_scale", options: [] }
     ]);
+    setLastAddedIndex(newIdx);
+
+    setTimeout(() => {
+      if (questionsContainerRef.current) {
+        questionsContainerRef.current.scrollTo({
+          top: questionsContainerRef.current.scrollHeight,
+          behavior: 'smooth'
+        });
+        const inputs = questionsContainerRef.current.querySelectorAll('.builder-question-input');
+        if (inputs.length > 0) {
+          inputs[inputs.length - 1].focus();
+        }
+      }
+    }, 60);
   };
 
   const handleRemoveQuestion = (idx) => {
+    if (questions.length <= 1) {
+      alert("At least one question is required for an experiment.");
+      return;
+    }
     setQuestions(questions.filter((_, i) => i !== idx));
   };
 
@@ -403,9 +424,9 @@ const ExperimentBuilder = () => {
               <button
                 type="button"
                 onClick={handleAddQuestion}
-                className="px-3 py-1.5 rounded-lg bg-white text-[#062319] hover:bg-[#F0FDF4] text-xs font-bold flex items-center gap-1 cursor-pointer shadow-md self-start sm:self-auto"
+                className="px-3 py-1.5 rounded-lg bg-white text-[#062319] hover:bg-[#F0FDF4] text-xs font-bold flex items-center gap-1 cursor-pointer shadow-md self-start sm:self-auto transition-all active:scale-95"
               >
-                <Plus className="w-3.5 h-3.5" />
+                <Plus className="w-3.5 h-3.5 text-[#062319]" />
                 <span>Add Question</span>
               </button>
             </div>
@@ -422,7 +443,23 @@ const ExperimentBuilder = () => {
                 <button
                   key={idx}
                   type="button"
-                  onClick={() => setQuestions([...questions, { question_text: p.q, question_type: p.type, options: p.options }])}
+                  onClick={() => {
+                    const newQuestions = [...questions, { question_text: p.q, question_type: p.type, options: p.options }];
+                    setQuestions(newQuestions);
+                    setLastAddedIndex(newQuestions.length - 1);
+                    setTimeout(() => {
+                      if (questionsContainerRef.current) {
+                        questionsContainerRef.current.scrollTo({
+                          top: questionsContainerRef.current.scrollHeight,
+                          behavior: 'smooth'
+                        });
+                        const inputs = questionsContainerRef.current.querySelectorAll('.builder-question-input');
+                        if (inputs.length > 0) {
+                          inputs[inputs.length - 1].focus();
+                        }
+                      }
+                    }, 60);
+                  }}
                   className="px-2.5 py-1 rounded-md bg-[#062319] hover:bg-[#0E3D2E] border border-white/20 text-xs text-[#E6F4EA] hover:text-white cursor-pointer transition-colors"
                 >
                   {p.label}
@@ -430,71 +467,96 @@ const ExperimentBuilder = () => {
               ))}
             </div>
 
-            <div className="space-y-3 max-h-96 overflow-y-auto pr-1">
-              {questions.map((q, idx) => (
-                <div key={idx} className="p-4 rounded-xl bg-[#062319] border border-white/15 space-y-3">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="w-6 h-6 rounded-full bg-[#0E3D2E] border border-white/30 flex items-center justify-center text-xs text-white font-bold shrink-0">
-                      {idx + 1}
-                    </span>
-                    <input
-                      type="text"
-                      value={q.question_text}
-                      onChange={(e) => {
-                        const copy = [...questions];
-                        copy[idx].question_text = e.target.value;
-                        setQuestions(copy);
-                      }}
-                      className="flex-1 px-3 py-1.5 rounded-xl bg-slate-950/80 border border-slate-700/80 text-xs text-white focus:outline-none focus:border-cyan-400"
-                    />
-                    <button
-                      onClick={() => handleRemoveQuestion(idx)}
-                      className="text-rose-400 hover:text-rose-300 p-1 cursor-pointer"
-                      title="Remove question"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-                    <div className="flex items-center gap-3">
-                      <span className="text-cyan-300">Question Type:</span>
-                      <select
-                        value={q.question_type}
+            <div 
+              ref={questionsContainerRef}
+              className="space-y-3 max-h-[440px] overflow-y-auto pr-1 scroll-smooth"
+            >
+              {questions.map((q, idx) => {
+                const isHighlighted = lastAddedIndex === idx;
+                return (
+                  <div 
+                    key={idx} 
+                    className={`p-4 rounded-xl bg-[#062319] border transition-all ${
+                      isHighlighted 
+                        ? 'border-[#34D399] ring-2 ring-[#34D399]/40 shadow-lg shadow-[#34D399]/15' 
+                        : 'border-white/15 hover:border-white/25'
+                    } space-y-3`}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
+                        isHighlighted 
+                          ? 'bg-[#34D399] text-[#062319]' 
+                          : 'bg-[#0E3D2E] border border-white/30 text-white'
+                      }`}>
+                        {idx + 1}
+                      </span>
+                      <input
+                        type="text"
+                        value={q.question_text}
                         onChange={(e) => {
-                          const copy = [...questions];
-                          copy[idx].question_type = e.target.value;
-                          setQuestions(copy);
+                          const val = e.target.value;
+                          setQuestions(prev => prev.map((item, i) => i === idx ? { ...item, question_text: val } : item));
                         }}
-                        className="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-cyan-400"
+                        placeholder="Type your custom research question here..."
+                        className="builder-question-input flex-1 px-3 py-1.5 rounded-lg bg-[#0E3D2E] border border-white/20 text-xs text-white focus:outline-none focus:border-[#34D399] transition-colors"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveQuestion(idx)}
+                        className="text-rose-400 hover:text-rose-300 p-1 cursor-pointer transition-colors"
+                        title="Remove question"
                       >
-                        <option value="single_choice">Single Choice</option>
-                        <option value="rating_scale">Rating Scale (1-5)</option>
-                        <option value="likert">Likert Scale</option>
-                        <option value="yes_no">Yes / No</option>
-                        <option value="open_ended">Open Ended</option>
-                      </select>
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
 
-                    {q.question_type === "single_choice" && (
-                      <div className="flex items-center gap-2 flex-1 sm:justify-end">
-                        <span className="text-[#A7F3D0] text-[11px]">Options:</span>
-                        <input
-                          type="text"
-                          value={(q.options || []).join(", ")}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                      <div className="flex items-center gap-3">
+                        <span className="text-[#34D399]">Question Type:</span>
+                        <select
+                          value={q.question_type}
                           onChange={(e) => {
-                            const copy = [...questions];
-                            copy[idx].options = e.target.value.split(",").map(s => s.trim()).filter(Boolean);
-                            setQuestions(copy);
+                            const val = e.target.value;
+                            setQuestions(prev => prev.map((item, i) => i === idx ? { ...item, question_type: val } : item));
                           }}
-                          placeholder="e.g. High, Moderate, Low"
-                          className="w-44 px-2 py-1 rounded bg-[#062319] border border-white/20 text-[11px] text-white focus:outline-none focus:border-white"
-                        />
+                          className="px-3 py-1.5 rounded-lg bg-[#0E3D2E] border border-white/20 text-xs text-white focus:outline-none focus:border-[#34D399]"
+                        >
+                          <option value="single_choice">Single Choice</option>
+                          <option value="rating_scale">Rating Scale (1-5)</option>
+                          <option value="likert">Likert Scale</option>
+                          <option value="yes_no">Yes / No</option>
+                          <option value="open_ended">Open Ended</option>
+                        </select>
                       </div>
-                    )}
+
+                      {q.question_type === "single_choice" && (
+                        <div className="flex items-center gap-2 flex-1 sm:justify-end">
+                          <span className="text-[#A7F3D0] text-[11px]">Options (comma separated):</span>
+                          <input
+                            type="text"
+                            value={(q.options || []).join(", ")}
+                            onChange={(e) => {
+                              const val = e.target.value.split(",").map(s => s.trim()).filter(Boolean);
+                              setQuestions(prev => prev.map((item, i) => i === idx ? { ...item, options: val } : item));
+                            }}
+                            placeholder="e.g. High, Moderate, Low"
+                            className="w-48 px-2 py-1 rounded bg-[#0E3D2E] border border-white/20 text-[11px] text-white focus:outline-none focus:border-[#34D399]"
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
+
+              <button
+                type="button"
+                onClick={handleAddQuestion}
+                className="w-full py-3 rounded-xl border-2 border-dashed border-[#34D399]/40 hover:border-[#34D399] bg-[#0E3D2E]/30 hover:bg-[#0E3D2E]/70 text-[#E6F4EA] hover:text-white text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer mt-2"
+              >
+                <Plus className="w-4 h-4 text-[#34D399]" />
+                <span>+ Add Another Question to Experiment</span>
+              </button>
             </div>
           </div>
         )}

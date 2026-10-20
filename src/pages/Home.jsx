@@ -1,10 +1,87 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { useCustomer } from '../context/CustomerContext';
+
+const DYNAMIC_TAGLINES = [
+  {
+    highlight: "Always Fresh",
+    badge: "Always Fresh",
+    desc: "Crispy dosas, soft idlis, flavourful vadas and more - made with fresh ingredients and served with authentic South Indian taste."
+  },
+  {
+    highlight: "Pure Desi Ghee",
+    badge: "Pure Desi Ghee",
+    desc: "Golden roasted crepes drenched in authentic pure cow ghee, releasing heavenly traditional aromas in every bite."
+  },
+  {
+    highlight: "Crispy & Golden",
+    badge: "Crispy & Golden",
+    desc: "Lacy, ultra-crisp crepes sprinkled with artisanal gunpowder spices and served with 3 homemade fresh chutneys."
+  },
+  {
+    highlight: "Degree Filter Brew",
+    badge: "Filter Coffee",
+    desc: "Signature dark decoction slowly extracted with chicory, frothed with thick boiling milk in brass dabara sets."
+  },
+  {
+    highlight: "Steamed to Perfection",
+    badge: "Millet Idlis",
+    desc: "Piping hot ragi and foxtail millet idlis steamed naturally from 24-hour stone-ground fermented batter."
+  },
+  {
+    highlight: "Delivered in 30 Mins",
+    badge: "30-Min Delivery",
+    desc: "Live from our Nuagan kitchen straight to your doorstep in insulated thermal bags keeping food sizzling hot."
+  }
+];
 
 const Home = () => {
   const navigate = useNavigate();
   const containerRef = useRef(null);
+  const { addToCart, setIsCartOpen } = useCustomer();
+
+  // Dynamic Typewriter Headline State
+  const [taglineIndex, setTaglineIndex] = useState(0);
+  const [displayText, setDisplayText] = useState(DYNAMIC_TAGLINES[0].highlight);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    if (isPaused) return;
+
+    const targetText = DYNAMIC_TAGLINES[taglineIndex].highlight;
+    let timer;
+
+    if (!isDeleting) {
+      if (displayText.length < targetText.length) {
+        timer = setTimeout(() => {
+          setDisplayText(targetText.slice(0, displayText.length + 1));
+        }, 70);
+      } else {
+        timer = setTimeout(() => {
+          setIsDeleting(true);
+        }, 2200);
+      }
+    } else {
+      if (displayText.length > 0) {
+        timer = setTimeout(() => {
+          setDisplayText(targetText.slice(0, displayText.length - 1));
+        }, 35);
+      } else {
+        setIsDeleting(false);
+        setTaglineIndex((prev) => (prev + 1) % DYNAMIC_TAGLINES.length);
+      }
+    }
+
+    return () => clearTimeout(timer);
+  }, [displayText, isDeleting, taglineIndex, isPaused]);
+
+  const selectTagline = (idx) => {
+    setTaglineIndex(idx);
+    setIsDeleting(false);
+    setDisplayText(DYNAMIC_TAGLINES[idx].highlight);
+  };
 
   const openResearcherModal = (e) => {
     if (e) e.preventDefault();
@@ -54,16 +131,115 @@ const Home = () => {
           
           {/* Left Side: Elegant Typography */}
           <div style={{ paddingRight: '20px', zIndex: 2 }}>
-            <div className="text-eyebrow" style={{ color: '#A0B3A6', letterSpacing: '0.2em', fontSize: '13px', marginBottom: '24px' }}>AUTHENTIC SOUTH INDIAN FLAVOURS</div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px', marginBottom: '18px' }}>
+              <div className="text-eyebrow" style={{ color: '#A0B3A6', letterSpacing: '0.2em', fontSize: '13px' }}>
+                AUTHENTIC SOUTH INDIAN FLAVOURS
+              </div>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '3px 10px', borderRadius: '20px', backgroundColor: 'rgba(52, 211, 153, 0.12)', border: '1px solid rgba(52, 211, 153, 0.35)', fontSize: '10px', color: '#34D399', fontFamily: 'monospace' }}>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#34D399] animate-pulse" />
+                <span>DYNAMIC SHOWCASE</span>
+              </div>
+            </div>
             
-            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(50px, 6.5vw, 90px)', lineHeight: '1.1', color: '#F4F4F4', marginBottom: '20px', fontWeight: '600' }}>
+            {/* Dynamic Animated Heading */}
+            <h1 
+              style={{ 
+                fontFamily: "'Playfair Display', serif", 
+                fontSize: 'clamp(46px, 6.2vw, 88px)', 
+                lineHeight: '1.12', 
+                color: '#F4F4F4', 
+                marginBottom: '16px', 
+                fontWeight: '600',
+                minHeight: '2.3em'
+              }}
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
+            >
               Traditional<br/>
-              Taste, <span style={{ color: '#34D399', fontStyle: 'italic' }}>Always Fresh</span>
+              Taste,{' '}
+              <span 
+                style={{ 
+                  color: '#34D399', 
+                  fontStyle: 'italic',
+                  background: 'linear-gradient(135deg, #FFFFFF 0%, #34D399 50%, #6EE7B7 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  display: 'inline'
+                }}
+              >
+                {displayText}
+              </span>
+              <span 
+                style={{
+                  display: 'inline-block',
+                  width: '3.5px',
+                  height: '0.85em',
+                  backgroundColor: '#34D399',
+                  marginLeft: '4px',
+                  verticalAlign: '-0.05em',
+                  boxShadow: '0 0 10px #34D399',
+                  borderRadius: '2px'
+                }}
+                className="animate-pulse"
+              />
             </h1>
+
+            {/* Interactive Dynamic Tagline Selector Pills */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px' }}>
+              {DYNAMIC_TAGLINES.map((item, idx) => {
+                const isActive = idx === taglineIndex;
+                return (
+                  <button
+                    key={item.badge}
+                    type="button"
+                    onClick={() => selectTagline(idx)}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      padding: '4px 12px',
+                      borderRadius: '20px',
+                      fontSize: '11px',
+                      fontFamily: 'system-ui, sans-serif',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      transition: 'all 0.25s ease',
+                      backgroundColor: isActive ? 'rgba(52, 211, 153, 0.2)' : 'rgba(255, 255, 255, 0.05)',
+                      color: isActive ? '#34D399' : 'rgba(255, 255, 255, 0.65)',
+                      border: isActive ? '1px solid #34D399' : '1px solid rgba(255, 255, 255, 0.12)',
+                      boxShadow: isActive ? '0 0 12px rgba(52, 211, 153, 0.25)' : 'none'
+                    }}
+                  >
+                    <span 
+                      style={{ 
+                        width: '6px', 
+                        height: '6px', 
+                        borderRadius: '50%', 
+                        backgroundColor: isActive ? '#34D399' : 'rgba(255, 255, 255, 0.3)',
+                        display: 'inline-block'
+                      }} 
+                    />
+                    <span>{item.badge}</span>
+                  </button>
+                );
+              })}
+            </div>
             
-            <p style={{ fontFamily: "system-ui, sans-serif", color: '#A0B3A6', fontSize: '17px', lineHeight: '1.6', marginBottom: '24px', maxWidth: '480px' }}>
-              Crispy dosas, soft idlis, flavourful vadas and more - made with fresh ingredients and served with authentic South Indian taste.
-            </p>
+            {/* Dynamic Description matching active tagline */}
+            <div style={{ minHeight: '60px', marginBottom: '24px' }}>
+              <AnimatePresence mode="wait">
+                <motion.p 
+                  key={taglineIndex}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.3 }}
+                  style={{ fontFamily: "system-ui, sans-serif", color: '#A0B3A6', fontSize: '16px', lineHeight: '1.6', maxWidth: '480px', margin: 0 }}
+                >
+                  {DYNAMIC_TAGLINES[taglineIndex].desc}
+                </motion.p>
+              </AnimatePresence>
+            </div>
             
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', alignItems: 'center' }}>
               <button 
@@ -189,10 +365,10 @@ const Home = () => {
         
         <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px', alignItems: 'start', marginTop: '80px'}}>
           {[
-            { img: "/filtercoffe.png", title: "Filter Coffee", desc: "Aromatic & Strong", price: "₹ 90", text: "Authentic Kumbakonam degree coffee brewed fresh with pure cow's milk." },
-            { img: "/thali.png", title: "South Thali", desc: "Authentic Meals", price: "₹ 250", text: "A wholesome traditional meal served on a banana leaf with 12 delicious items." },
-            { img: "/dosaSecond.png", title: "Special Dosa", desc: "Crispy & Golden", price: "₹ 140", text: "Our signature crispy dosa stuffed with spicy potato masala and served with 3 chutneys." },
-            { img: "/idli.png", title: "Soft Idli", desc: "Soft & Fluffy", price: "₹ 80", text: "Melt-in-mouth steamed rice cakes served hot with sambar and fresh coconut chutney." },
+            { id: "kdp-drink-01", img: "/filtercoffe.png", title: "Filter Coffee", desc: "Aromatic & Strong", price: "₹ 55", numericPrice: 55, category: "Filter Coffee & Beverages", text: "Authentic Kumbakonam degree coffee brewed fresh with pure cow's milk." },
+            { id: "kdp-thali-01", img: "/thali.png", title: "South Thali", desc: "Authentic Meals", price: "₹ 260", numericPrice: 260, category: "Thalis & Traditional Meals", text: "A wholesome traditional meal served on a banana leaf with 12 delicious items." },
+            { id: "kdp-dosa-01", img: "/dosaSecond.png", title: "Special Dosa", desc: "Crispy & Golden", price: "₹ 140", numericPrice: 140, category: "Signature Dosas", text: "Our signature crispy dosa stuffed with spicy potato masala and served with 3 chutneys." },
+            { id: "kdp-idli-01", img: "/idli.png", title: "Soft Idli", desc: "Soft & Fluffy", price: "₹ 95", numericPrice: 95, category: "Steamed Classics & Vadas", text: "Melt-in-mouth steamed rice cakes served hot with sambar and fresh coconut chutney." },
           ].map((item, idx) => (
             <motion.div 
               key={idx}
@@ -252,6 +428,18 @@ const Home = () => {
               </p>
               
               <button 
+                onClick={() => {
+                  addToCart({
+                    id: item.id,
+                    name: item.title,
+                    price: item.numericPrice,
+                    category: item.category,
+                    isVeg: true,
+                    description: item.text,
+                    image: item.img
+                  });
+                  setIsCartOpen(true);
+                }}
                 style={{ 
                   marginTop: 'auto',
                   backgroundColor: 'transparent',
@@ -269,7 +457,7 @@ const Home = () => {
                 onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#FFFFFF'; e.currentTarget.style.color = '#062319'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#FFFFFF'; }}
               >
-                Add to Order
+                Add to Order +
               </button>
             </motion.div>
           ))}

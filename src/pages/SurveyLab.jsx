@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   ClipboardList, Filter, Download, CheckCircle2, 
   HelpCircle, Eye, FileSpreadsheet, ArrowUpDown,
   Sparkles, User, Users, Plus, Trash2, Play, Search,
   ChevronRight, ArrowRight, ShieldCheck, Clock, DollarSign,
-  HeartPulse, RefreshCw, X, MessageSquare, Layers
+  HeartPulse, RefreshCw, X, MessageSquare, Layers, RotateCcw
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
@@ -106,6 +106,9 @@ const SurveyLab = () => {
   const [isExecutingSurvey, setIsExecutingSurvey] = useState(false);
   const [executionProgress, setExecutionProgress] = useState(0);
   const [executionStatus, setExecutionStatus] = useState("");
+  const questionsContainerRef = useRef(null);
+  const [lastAddedIndex, setLastAddedIndex] = useState(null);
+  const [questionFeedback, setQuestionFeedback] = useState(null);
 
   const loadSurveyResults = async () => {
     try {
@@ -217,15 +220,48 @@ const SurveyLab = () => {
     }
   };
 
-  const handleAddQuestion = () => {
-    setCustomQuestions([
-      ...customQuestions,
-      {
-        question_text: "New evaluated product hypothesis question...",
-        question_type: "rating_scale",
-        options: []
+  const handleAddQuestion = (atBeginning = false) => {
+    const newQuestion = {
+      question_text: "",
+      question_type: "rating_scale",
+      options: []
+    };
+
+    let updatedQuestions;
+    let newIndex;
+    if (atBeginning) {
+      updatedQuestions = [newQuestion, ...customQuestions];
+      newIndex = 0;
+    } else {
+      updatedQuestions = [...customQuestions, newQuestion];
+      newIndex = customQuestions.length;
+    }
+
+    setCustomQuestions(updatedQuestions);
+    setLastAddedIndex(newIndex);
+    setQuestionFeedback(`✓ Question #${newIndex + 1} added! Start typing below.`);
+
+    setTimeout(() => {
+      setQuestionFeedback(null);
+    }, 3500);
+
+    setTimeout(() => {
+      if (questionsContainerRef.current) {
+        if (atBeginning) {
+          questionsContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          questionsContainerRef.current.scrollTo({
+            top: questionsContainerRef.current.scrollHeight,
+            behavior: 'smooth'
+          });
+        }
+        const inputs = questionsContainerRef.current.querySelectorAll('.question-input-field');
+        const targetInput = atBeginning ? inputs[0] : inputs[inputs.length - 1];
+        if (targetInput) {
+          targetInput.focus();
+        }
       }
-    ]);
+    }, 60);
   };
 
   const handleRemoveQuestion = (idx) => {
@@ -233,11 +269,42 @@ const SurveyLab = () => {
       alert("A survey must contain at least one question.");
       return;
     }
-    setCustomQuestions(customQuestions.filter((_, i) => i !== idx));
+    const filtered = customQuestions.filter((_, i) => i !== idx);
+    setCustomQuestions(filtered);
+    setQuestionFeedback(`Removed question #${idx + 1}`);
+    setTimeout(() => setQuestionFeedback(null), 2500);
   };
 
   const handleApplyTemplate = (tmpl) => {
-    setCustomQuestions([...customQuestions, { ...tmpl.question }]);
+    const newQuestions = [...customQuestions, { ...tmpl.question }];
+    setCustomQuestions(newQuestions);
+    const newIndex = newQuestions.length - 1;
+    setLastAddedIndex(newIndex);
+    setQuestionFeedback(`✓ Added template: "${tmpl.label}"`);
+    setTimeout(() => setQuestionFeedback(null), 3000);
+
+    setTimeout(() => {
+      if (questionsContainerRef.current) {
+        questionsContainerRef.current.scrollTo({
+          top: questionsContainerRef.current.scrollHeight,
+          behavior: 'smooth'
+        });
+        const inputs = questionsContainerRef.current.querySelectorAll('.question-input-field');
+        if (inputs.length > 0) {
+          inputs[inputs.length - 1].focus();
+        }
+      }
+    }, 60);
+  };
+
+  const handleResetQuestions = () => {
+    setCustomQuestions(DEFAULT_PRESET_QUESTIONS);
+    setLastAddedIndex(null);
+    setQuestionFeedback("✓ Reset back to 5 default questions.");
+    setTimeout(() => setQuestionFeedback(null), 3000);
+    if (questionsContainerRef.current) {
+      questionsContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const handleExecuteCustomSurvey = async (e) => {
@@ -787,23 +854,61 @@ const SurveyLab = () => {
               <div className="space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div>
-                    <span className="text-xs font-bold text-white uppercase tracking-wider block">
-                      Survey Questions ({customQuestions.length})
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-white uppercase tracking-wider block">
+                        Survey Questions ({customQuestions.length})
+                      </span>
+                      {customQuestions.length !== 5 && (
+                        <span className="px-2 py-0.5 rounded-full bg-[#34D399]/20 text-[#34D399] text-[10px] font-bold">
+                          {customQuestions.length > 5 ? `+${customQuestions.length - 5} Custom` : 'Custom'}
+                        </span>
+                      )}
+                    </div>
                     <span className="text-[11px] text-[#A7F3D0]">
                       Add, edit, or customize any research questions to test against the selected persona(s).
                     </span>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={handleAddQuestion}
-                    className="px-3 py-1.5 rounded-lg bg-white text-[#062319] hover:bg-[#F0FDF4] text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md self-start sm:self-auto"
-                  >
-                    <Plus className="w-3.5 h-3.5 text-[#062319]" />
-                    <span>Add Question</span>
-                  </button>
+                  <div className="flex items-center gap-2 self-start sm:self-auto">
+                    {customQuestions.length > 5 && (
+                      <button
+                        type="button"
+                        onClick={handleResetQuestions}
+                        className="px-2.5 py-1.5 rounded-lg bg-[#0E3D2E] border border-white/20 text-[#E6F4EA] hover:text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition-colors"
+                        title="Reset questions back to the 5 default templates"
+                      >
+                        <RotateCcw className="w-3.5 h-3.5 text-[#34D399]" />
+                        <span>Reset Defaults (5)</span>
+                      </button>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() => handleAddQuestion(false)}
+                      className="px-3 py-1.5 rounded-lg bg-white text-[#062319] hover:bg-[#F0FDF4] text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md transition-all active:scale-95"
+                    >
+                      <Plus className="w-3.5 h-3.5 text-[#062319]" />
+                      <span>Add Question</span>
+                    </button>
+                  </div>
                 </div>
+
+                {/* Feedback Toast Banner */}
+                {questionFeedback && (
+                  <div className="p-2.5 rounded-lg bg-[#0E3D2E] border border-[#34D399] text-[#34D399] text-xs font-semibold flex items-center justify-between shadow-md animate-fadeIn">
+                    <span className="flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4 text-[#34D399] shrink-0" />
+                      {questionFeedback}
+                    </span>
+                    <button 
+                      type="button" 
+                      onClick={() => setQuestionFeedback(null)} 
+                      className="text-white/60 hover:text-white text-xs p-1 cursor-pointer"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                )}
 
                 {/* Quick Preset Question Buttons */}
                 <div className="flex flex-wrap items-center gap-2">
@@ -813,82 +918,106 @@ const SurveyLab = () => {
                       key={idx}
                       type="button"
                       onClick={() => handleApplyTemplate(tmpl)}
-                      className="px-2.5 py-1 rounded-lg bg-[#0E3D2E] hover:bg-[#062319] border border-white/20 text-xs text-[#E6F4EA] hover:text-white cursor-pointer transition-colors"
+                      className="px-2.5 py-1 rounded-lg bg-[#0E3D2E] hover:bg-[#062319] border border-white/20 text-xs text-[#E6F4EA] hover:text-white cursor-pointer transition-colors flex items-center gap-1"
                     >
-                      {tmpl.label}
+                      <span>{tmpl.label}</span>
                     </button>
                   ))}
                 </div>
 
-                {/* Editable Questions List */}
-                <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
-                  {customQuestions.map((q, idx) => (
-                    <div key={idx} className="p-4 rounded-xl bg-[#062319] border border-white/15 space-y-3">
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="w-6 h-6 rounded-full bg-[#0E3D2E] border border-[#34D399]/50 flex items-center justify-center text-xs text-[#34D399] font-bold shrink-0">
-                          {idx + 1}
-                        </span>
-                        <input
-                          type="text"
-                          value={q.question_text}
-                          onChange={(e) => {
-                            const copy = [...customQuestions];
-                            copy[idx].question_text = e.target.value;
-                            setCustomQuestions(copy);
-                          }}
-                          placeholder="Type your custom research question here..."
-                          className="flex-1 px-3 py-1.5 rounded-lg bg-[#0E3D2E] border border-white/20 text-xs text-white focus:outline-none focus:border-white"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveQuestion(idx)}
-                          className="text-rose-400 hover:text-rose-300 p-1 cursor-pointer"
-                          title="Remove question"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-                        <div className="flex items-center gap-3">
-                          <span className="text-[#34D399]">Question Type:</span>
-                          <select
-                            value={q.question_type}
+                {/* Editable Questions List with ref & smooth scroll */}
+                <div 
+                  ref={questionsContainerRef}
+                  className="space-y-3 max-h-[460px] min-h-[220px] overflow-y-auto pr-1 scroll-smooth"
+                >
+                  {customQuestions.map((q, idx) => {
+                    const isHighlighted = lastAddedIndex === idx;
+                    return (
+                      <div 
+                        key={idx} 
+                        className={`p-4 rounded-xl bg-[#062319] border transition-all ${
+                          isHighlighted 
+                            ? 'border-[#34D399] ring-2 ring-[#34D399]/40 shadow-lg shadow-[#34D399]/15' 
+                            : 'border-white/15 hover:border-white/25'
+                        } space-y-3`}
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
+                            isHighlighted
+                              ? 'bg-[#34D399] text-[#062319]'
+                              : 'bg-[#0E3D2E] border border-[#34D399]/50 text-[#34D399]'
+                          }`}>
+                            {idx + 1}
+                          </span>
+                          <input
+                            type="text"
+                            value={q.question_text}
                             onChange={(e) => {
-                              const copy = [...customQuestions];
-                              copy[idx].question_type = e.target.value;
-                              setCustomQuestions(copy);
+                              const val = e.target.value;
+                              setCustomQuestions(prev => prev.map((item, i) => i === idx ? { ...item, question_text: val } : item));
                             }}
-                            className="px-3 py-1 rounded-lg bg-[#0E3D2E] border border-white/20 text-xs text-white focus:outline-none"
+                            placeholder="Type your custom research question here..."
+                            className="question-input-field flex-1 px-3 py-1.5 rounded-lg bg-[#0E3D2E] border border-white/20 text-xs text-white focus:outline-none focus:border-[#34D399] transition-colors"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveQuestion(idx)}
+                            className="text-rose-400 hover:text-rose-300 p-1 cursor-pointer transition-colors"
+                            title={`Remove question #${idx + 1}`}
                           >
-                            <option value="single_choice">Single Choice</option>
-                            <option value="rating_scale">Rating Scale (1-5)</option>
-                            <option value="likert">Likert Scale</option>
-                            <option value="yes_no">Yes / No</option>
-                            <option value="open_ended">Open Ended</option>
-                          </select>
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
 
-                        {/* Options Input for Single Choice */}
-                        {q.question_type === "single_choice" && (
-                          <div className="flex items-center gap-2 flex-1 sm:justify-end">
-                            <span className="text-[#A7F3D0] text-[11px]">Options (comma separated):</span>
-                            <input
-                              type="text"
-                              value={(q.options || []).join(", ")}
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                          <div className="flex items-center gap-3">
+                            <span className="text-[#34D399]">Question Type:</span>
+                            <select
+                              value={q.question_type}
                               onChange={(e) => {
-                                const copy = [...customQuestions];
-                                copy[idx].options = e.target.value.split(",").map(s => s.trim()).filter(Boolean);
-                                setCustomQuestions(copy);
+                                const val = e.target.value;
+                                setCustomQuestions(prev => prev.map((item, i) => i === idx ? { ...item, question_type: val } : item));
                               }}
-                              placeholder="e.g. High, Moderate, Low"
-                              className="w-48 px-2 py-0.5 rounded-lg bg-[#0E3D2E] border border-white/20 text-[11px] text-white focus:outline-none"
-                            />
+                              className="px-3 py-1 rounded-lg bg-[#0E3D2E] border border-white/20 text-xs text-white focus:outline-none focus:border-[#34D399]"
+                            >
+                              <option value="single_choice">Single Choice</option>
+                              <option value="rating_scale">Rating Scale (1-5)</option>
+                              <option value="likert">Likert Scale</option>
+                              <option value="yes_no">Yes / No</option>
+                              <option value="open_ended">Open Ended</option>
+                            </select>
                           </div>
-                        )}
+
+                          {/* Options Input for Single Choice */}
+                          {q.question_type === "single_choice" && (
+                            <div className="flex items-center gap-2 flex-1 sm:justify-end">
+                              <span className="text-[#A7F3D0] text-[11px]">Options (comma separated):</span>
+                              <input
+                                type="text"
+                                value={(q.options || []).join(", ")}
+                                onChange={(e) => {
+                                  const val = e.target.value.split(",").map(s => s.trim()).filter(Boolean);
+                                  setCustomQuestions(prev => prev.map((item, i) => i === idx ? { ...item, options: val } : item));
+                                }}
+                                placeholder="e.g. Completely Acceptable, Neutral, Unacceptable"
+                                className="w-56 px-2 py-1 rounded-lg bg-[#0E3D2E] border border-white/20 text-[11px] text-white focus:outline-none focus:border-[#34D399]"
+                              />
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
+
+                  {/* Explicit Bottom Add Button */}
+                  <button
+                    type="button"
+                    onClick={() => handleAddQuestion(false)}
+                    className="w-full py-3 rounded-xl border-2 border-dashed border-[#34D399]/40 hover:border-[#34D399] bg-[#0E3D2E]/30 hover:bg-[#0E3D2E]/70 text-[#E6F4EA] hover:text-white text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer mt-2"
+                  >
+                    <Plus className="w-4 h-4 text-[#34D399]" />
+                    <span>+ Add Another Question to Survey</span>
+                  </button>
                 </div>
               </div>
 
