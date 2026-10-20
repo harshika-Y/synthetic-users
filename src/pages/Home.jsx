@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useCustomer } from '../context/CustomerContext';
+import { getAssetUrl } from '../utils/assets';
 
 const DYNAMIC_TAGLINES = [
   {
@@ -111,7 +112,7 @@ const Home = () => {
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none', zIndex: 10 }}>
           <div style={{ position: 'sticky', top: '15vh', height: '600px', display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', overflow: 'visible', width: '100%', maxWidth: '1440px', margin: '0 auto', paddingLeft: '5%', paddingRight: '5%' }}>
             <motion.img 
-              src="/dosa.png" 
+              src={getAssetUrl('/dosa.png')} 
               alt="Kadappa Cafe Dosa"
               style={{ 
                 width: '110%', 
@@ -365,10 +366,10 @@ const Home = () => {
         
         <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px', alignItems: 'start', marginTop: '80px'}}>
           {[
-            { id: "kdp-drink-01", img: "/filtercoffe.png", title: "Filter Coffee", desc: "Aromatic & Strong", price: "₹ 55", numericPrice: 55, category: "Filter Coffee & Beverages", text: "Authentic Kumbakonam degree coffee brewed fresh with pure cow's milk." },
-            { id: "kdp-thali-01", img: "/thali.png", title: "South Thali", desc: "Authentic Meals", price: "₹ 260", numericPrice: 260, category: "Thalis & Traditional Meals", text: "A wholesome traditional meal served on a banana leaf with 12 delicious items." },
-            { id: "kdp-dosa-01", img: "/dosaSecond.png", title: "Special Dosa", desc: "Crispy & Golden", price: "₹ 140", numericPrice: 140, category: "Signature Dosas", text: "Our signature crispy dosa stuffed with spicy potato masala and served with 3 chutneys." },
-            { id: "kdp-idli-01", img: "/idli.png", title: "Soft Idli", desc: "Soft & Fluffy", price: "₹ 95", numericPrice: 95, category: "Steamed Classics & Vadas", text: "Melt-in-mouth steamed rice cakes served hot with sambar and fresh coconut chutney." },
+            { id: "kdp-drink-01", img: getAssetUrl("/filtercoffe.png"), title: "Filter Coffee", desc: "Aromatic & Strong", price: "₹ 55", numericPrice: 55, category: "Filter Coffee & Beverages", text: "Authentic Kumbakonam degree coffee brewed fresh with pure cow's milk." },
+            { id: "kdp-thali-01", img: getAssetUrl("/thali.png"), title: "South Thali", desc: "Authentic Meals", price: "₹ 260", numericPrice: 260, category: "Thalis & Traditional Meals", text: "A wholesome traditional meal served on a banana leaf with 12 delicious items." },
+            { id: "kdp-dosa-01", img: getAssetUrl("/dosaSecond.png"), title: "Special Dosa", desc: "Crispy & Golden", price: "₹ 140", numericPrice: 140, category: "Signature Dosas", text: "Our signature crispy dosa stuffed with spicy potato masala and served with 3 chutneys." },
+            { id: "kdp-idli-01", img: getAssetUrl("/idli.png"), title: "Soft Idli", desc: "Soft & Fluffy", price: "₹ 95", numericPrice: 95, category: "Steamed Classics & Vadas", text: "Melt-in-mouth steamed rice cakes served hot with sambar and fresh coconut chutney." },
           ].map((item, idx) => (
             <motion.div 
               key={idx}

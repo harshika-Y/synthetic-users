@@ -6,6 +6,7 @@ import {
   Navigation, Loader2
 } from 'lucide-react';
 import { useCustomer, GOOGLE_DEMO_ACCOUNTS } from '../context/CustomerContext';
+import { getAssetUrl } from '../utils/assets';
 
 const CustomerModal = ({ isOpen, onClose }) => {
   const { 
@@ -147,7 +148,7 @@ const CustomerModal = ({ isOpen, onClose }) => {
 
         {/* Modal Header */}
         <div className="flex items-center gap-3 mb-5 border-b border-white/10 pb-4">
-          <img src="/logo.png" alt="Kadappa Cafe" className="h-11 w-auto" />
+          <img src={getAssetUrl('/logo.png')} alt="Kadappa Cafe" className="h-11 w-auto" />
           <div>
             <h2 className="text-base font-bold text-white uppercase tracking-wider font-mono">
               Kadappa Foodie Club

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MapPin, Phone, Clock, Navigation, Mail, ArrowRight, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { getAssetUrl } from '../utils/assets';
 
 const Footer = () => {
   const [newsletterEmail, setNewsletterEmail] = useState('');
@@ -73,7 +74,7 @@ const Footer = () => {
     <footer style={{ 
       position: 'relative',
       backgroundColor: 'var(--color-charred-clove)', 
-      backgroundImage: 'url(/footer-backgound.png)',
+      backgroundImage: `url(${getAssetUrl('/footer-backgound.png')})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
@@ -213,7 +214,7 @@ const Footer = () => {
 
         {/* Center: Logo & Info */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <img src="/logo.png" alt="Kadappa Cafe" style={{ height: '140px', width: 'auto', marginBottom: '25px' }} />
+          <img src={getAssetUrl('/logo.png')} alt="Kadappa Cafe" style={{ height: '140px', width: 'auto', marginBottom: '25px' }} />
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '15px' }}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{color: 'var(--color-tiger-gold)'}}>
               <path d="M12 2L15 8C15 8 18 8 18 12C18 16 12 20 12 20C12 20 6 16 6 12C6 8 9 8 9 8L12 2Z" fill="currentColor"/>

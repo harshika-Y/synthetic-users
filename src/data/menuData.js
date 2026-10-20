@@ -1,3 +1,5 @@
+import { getAssetUrl } from '../utils/assets';
+
 export const MENU_CATEGORIES = [
   'All',
   'Signature Dosas',
@@ -7,7 +9,7 @@ export const MENU_CATEGORIES = [
   'Desserts & Snacks'
 ];
 
-export const MENU_ITEMS = [
+const RAW_MENU_ITEMS = [
   // Signature Dosas
   {
     id: 'kdp-dosa-01',
@@ -256,3 +258,8 @@ export const MENU_ITEMS = [
     image: '/sweet.png'
   }
 ];
+
+export const MENU_ITEMS = RAW_MENU_ITEMS.map(item => ({
+  ...item,
+  image: getAssetUrl(item.image)
+}));

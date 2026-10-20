@@ -7,6 +7,7 @@ export default defineConfig({
   base: process.env.VITE_BASE_PATH || (process.env.GITHUB_ACTIONS ? '/synthetic-users/' : '/'),
   plugins: [react(), tailwindcss()],
   server: {
+    host: true,
     port: 5173,
     proxy: {
       '/api': {

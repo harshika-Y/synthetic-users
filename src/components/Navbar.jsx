@@ -4,6 +4,7 @@ import { Sparkles, ShoppingBag, Receipt, User } from 'lucide-react';
 import CustomerModal from './CustomerModal';
 import ResearcherModal from './ResearcherModal';
 import { useCustomer } from '../context/CustomerContext';
+import { getAssetUrl } from '../utils/assets';
 
 const Navbar = () => {
   const [researcherModalOpen, setResearcherModalOpen] = useState(false);
@@ -46,7 +47,7 @@ const Navbar = () => {
       >
         <div className="nav-brand">
           <Link to="/">
-            <img src="/logo.png" alt="Kadappa Cafe" style={{ height: '85px', width: 'auto' }} />
+            <img src={getAssetUrl('/logo.png')} alt="Kadappa Cafe" style={{ height: '85px', width: 'auto' }} />
           </Link>
         </div>
 

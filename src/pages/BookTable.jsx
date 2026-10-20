@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, Users, User, Phone, CheckCircle, Sparkles } from 'lucide-react';
+import { getAssetUrl } from '../utils/assets';
 
 const BookTable = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -52,7 +53,7 @@ const BookTable = () => {
             alignItems: 'center'
           }}>
             <img 
-              src="/kathakali.png" 
+              src={getAssetUrl('/kathakali.png')} 
               alt="Kathakali Art" 
               style={{ 
                 width: '100%', 

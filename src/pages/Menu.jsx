@@ -7,12 +7,13 @@ import {
 } from 'lucide-react';
 import { useCustomer } from '../context/CustomerContext';
 import { MENU_ITEMS, MENU_CATEGORIES } from '../data/menuData';
+import { getAssetUrl } from '../utils/assets';
 
 const Page = React.forwardRef((props, ref) => {
   return (
     <div className="page" ref={ref} style={{backgroundColor: 'var(--color-charred-clove)', overflow: 'hidden', boxShadow: 'inset 0 0 30px rgba(0,0,0,0.5)'}}>
       {props.image ? (
-        <img src={props.image} alt={`Menu Page`} style={{width: '100%', height: '100%', objectFit: 'contain'}} />
+        <img src={getAssetUrl(props.image)} alt={`Menu Page`} style={{width: '100%', height: '100%', objectFit: 'contain'}} />
       ) : (
         <div style={{width: '100%', height: '100%', backgroundColor: 'var(--color-charred-clove)'}}></div>
       )}

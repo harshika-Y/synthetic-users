@@ -4,6 +4,7 @@ import {
   Clock, ShieldCheck, UtensilsCrossed, Sparkles, Bike, Receipt
 } from 'lucide-react';
 import { useCustomer } from '../context/CustomerContext';
+import { getAssetUrl } from '../utils/assets';
 
 const BillModal = () => {
   const { isBillOpen, setIsBillOpen, activeBillOrder } = useCustomer();
@@ -84,7 +85,7 @@ const BillModal = () => {
           {/* Restaurant Header */}
           <div className="text-center border-b border-white/15 pb-5">
             <div className="flex justify-center items-center gap-3 mb-2">
-              <img src="/logo.png" alt="Kadappa Cafe" className="h-14 w-auto" />
+              <img src={getAssetUrl('/logo.png')} alt="Kadappa Cafe" className="h-14 w-auto" />
             </div>
             <h1 className="text-xl font-bold tracking-wider uppercase font-mono text-white">
               KADAPPA CAFE
