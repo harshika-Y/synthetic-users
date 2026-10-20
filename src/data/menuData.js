@@ -20,7 +20,6 @@ const RAW_MENU_ITEMS = [
     reviewsCount: 320,
     isVeg: true,
     isBestseller: true,
-    has3DAd: true,
     description: 'Crispy golden rice crepe roasted in aromatic cow ghee, coated with our signature spice gun-powder (podi), stuffed with potato masala.',
     prepTime: '15 mins',
     calories: '340 kcal',
@@ -80,7 +79,7 @@ const RAW_MENU_ITEMS = [
     description: 'Modern twist on tradition: loaded with molten Amul cheese, spicy gunpowder podi, and fresh herbs.',
     prepTime: '15 mins',
     calories: '420 kcal',
-    image: '/dosa.png'
+    image: '/cheese-dosa.jpg'
   },
 
   // Steamed Classics & Vadas
@@ -138,7 +137,7 @@ const RAW_MENU_ITEMS = [
     description: 'Fourteen bite-sized steamed idlis submerged in rich spiced Madras sambar and crowned with pure cow ghee.',
     prepTime: '12 mins',
     calories: '260 kcal',
-    image: '/idli.png'
+    image: '/mini-idli.jpg'
   },
 
   // Thalis & Traditional Meals

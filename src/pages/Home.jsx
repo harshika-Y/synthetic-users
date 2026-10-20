@@ -383,7 +383,7 @@ const Home = () => {
         
         <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px', alignItems: 'start', marginTop: '80px'}}>
           {[
-            { id: "kdp-dosa-01", img: getAssetUrl("/dosa-3d-ad.jpg"), title: "Ghee Podi Dosa", desc: "Crispy & Golden", price: "₹ 140", numericPrice: 140, category: "Signature Dosas", has3DAd: true, text: "Our signature crispy dosa drenched in pure cow ghee and coated with spicy gun-powder podi." },
+            { id: "kdp-dosa-01", img: getAssetUrl("/dosa-3d-ad.jpg"), title: "Ghee Podi Dosa", desc: "Crispy & Golden", price: "₹ 140", numericPrice: 140, category: "Signature Dosas", text: "Our signature crispy dosa drenched in pure cow ghee and coated with spicy gun-powder podi." },
             { id: "kdp-drink-01", img: getAssetUrl("/coffee.jpg"), title: "Filter Coffee", desc: "Aromatic & Strong", price: "₹ 55", numericPrice: 55, category: "Filter Coffee & Beverages", text: "Authentic Kumbakonam degree coffee brewed fresh with pure cow's milk." },
             { id: "kdp-thali-01", img: getAssetUrl("/thali.png"), title: "South Thali", desc: "Authentic Meals", price: "₹ 260", numericPrice: 260, category: "Thalis & Traditional Meals", text: "A wholesome traditional meal served on a banana leaf with 12 delicious items." },
             { id: "kdp-vada-01", img: getAssetUrl("/vada.jpg"), title: "Sambar Vada", desc: "Crispy & Flavourful", price: "₹ 75", numericPrice: 75, category: "Steamed Classics & Vadas", text: "Golden fried crispy urad dal fritters soaked in aromatic drumstick sambar with coconut chutney." },
@@ -437,19 +437,9 @@ const Home = () => {
                 {item.title}
               </h3>
               
-              <p style={{ fontFamily: "system-ui, sans-serif", color: 'var(--color-tiger-gold)', fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: '600', marginBottom: '12px' }}>
+              <p style={{ fontFamily: "system-ui, sans-serif", color: 'var(--color-tiger-gold)', fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: '600', marginBottom: '16px' }}>
                 {item.desc}
               </p>
-
-              {item.has3DAd && (
-                <button
-                  type="button"
-                  onClick={() => setIs3DAdOpen(true)}
-                  className="mb-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-black border border-emerald-500/40 text-[11px] font-bold font-mono transition-all cursor-pointer shadow"
-                >
-                  <span>🎬 3D Commercial (360°)</span>
-                </button>
-              )}
               
               <p style={{ fontFamily: "'Inter', sans-serif", color: '#A0B3A6', fontSize: '14px', lineHeight: '1.6', marginBottom: '30px' }}>
                 {item.text}
