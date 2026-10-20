@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useCustomer } from '../context/CustomerContext';
 import { getAssetUrl } from '../utils/assets';
+import FoodAdModal from '../components/FoodAdModal';
 
 const DYNAMIC_TAGLINES = [
   {
@@ -47,6 +48,7 @@ const Home = () => {
   const [displayText, setDisplayText] = useState(DYNAMIC_TAGLINES[0].highlight);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [is3DAdOpen, setIs3DAdOpen] = useState(false);
 
   useEffect(() => {
     if (isPaused) return;
@@ -381,10 +383,10 @@ const Home = () => {
         
         <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px', alignItems: 'start', marginTop: '80px'}}>
           {[
-            { id: "kdp-drink-01", img: getAssetUrl("/filtercoffe.png"), title: "Filter Coffee", desc: "Aromatic & Strong", price: "₹ 55", numericPrice: 55, category: "Filter Coffee & Beverages", text: "Authentic Kumbakonam degree coffee brewed fresh with pure cow's milk." },
+            { id: "kdp-dosa-01", img: getAssetUrl("/dosa-3d-ad.jpg"), title: "Ghee Podi Dosa", desc: "Crispy & Golden", price: "₹ 140", numericPrice: 140, category: "Signature Dosas", has3DAd: true, text: "Our signature crispy dosa drenched in pure cow ghee and coated with spicy gun-powder podi." },
+            { id: "kdp-drink-01", img: getAssetUrl("/coffee.jpg"), title: "Filter Coffee", desc: "Aromatic & Strong", price: "₹ 55", numericPrice: 55, category: "Filter Coffee & Beverages", text: "Authentic Kumbakonam degree coffee brewed fresh with pure cow's milk." },
             { id: "kdp-thali-01", img: getAssetUrl("/thali.png"), title: "South Thali", desc: "Authentic Meals", price: "₹ 260", numericPrice: 260, category: "Thalis & Traditional Meals", text: "A wholesome traditional meal served on a banana leaf with 12 delicious items." },
-            { id: "kdp-dosa-01", img: getAssetUrl("/dosaSecond.png"), title: "Special Dosa", desc: "Crispy & Golden", price: "₹ 140", numericPrice: 140, category: "Signature Dosas", text: "Our signature crispy dosa stuffed with spicy potato masala and served with 3 chutneys." },
-            { id: "kdp-idli-01", img: getAssetUrl("/idli.png"), title: "Soft Idli", desc: "Soft & Fluffy", price: "₹ 95", numericPrice: 95, category: "Steamed Classics & Vadas", text: "Melt-in-mouth steamed rice cakes served hot with sambar and fresh coconut chutney." },
+            { id: "kdp-vada-01", img: getAssetUrl("/vada.jpg"), title: "Sambar Vada", desc: "Crispy & Flavourful", price: "₹ 75", numericPrice: 75, category: "Steamed Classics & Vadas", text: "Golden fried crispy urad dal fritters soaked in aromatic drumstick sambar with coconut chutney." },
           ].map((item, idx) => (
             <motion.div 
               key={idx}
@@ -435,9 +437,19 @@ const Home = () => {
                 {item.title}
               </h3>
               
-              <p style={{ fontFamily: "system-ui, sans-serif", color: 'var(--color-tiger-gold)', fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: '600', marginBottom: '16px' }}>
+              <p style={{ fontFamily: "system-ui, sans-serif", color: 'var(--color-tiger-gold)', fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: '600', marginBottom: '12px' }}>
                 {item.desc}
               </p>
+
+              {item.has3DAd && (
+                <button
+                  type="button"
+                  onClick={() => setIs3DAdOpen(true)}
+                  className="mb-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-black border border-emerald-500/40 text-[11px] font-bold font-mono transition-all cursor-pointer shadow"
+                >
+                  <span>🎬 3D Commercial (360°)</span>
+                </button>
+              )}
               
               <p style={{ fontFamily: "'Inter', sans-serif", color: '#A0B3A6', fontSize: '14px', lineHeight: '1.6', marginBottom: '30px' }}>
                 {item.text}
@@ -681,6 +693,9 @@ const Home = () => {
 
         </div>
       </section>
+
+      {/* 6-8s 360° Photorealistic 3D Food Advertisement Modal */}
+      <FoodAdModal isOpen={is3DAdOpen} onClose={() => setIs3DAdOpen(false)} />
     </>
   );
 };

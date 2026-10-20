@@ -8,6 +8,7 @@ import {
 import { useCustomer } from '../context/CustomerContext';
 import { MENU_ITEMS, MENU_CATEGORIES } from '../data/menuData';
 import { getAssetUrl } from '../utils/assets';
+import FoodAdModal from '../components/FoodAdModal';
 
 const Page = React.forwardRef((props, ref) => {
   return (
@@ -25,6 +26,7 @@ const Menu = () => {
   const [viewMode, setViewMode] = useState('online'); // 'online' | 'flipbook'
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [is3DAdOpen, setIs3DAdOpen] = useState(false);
   
   // Flipbook state
   const [isOpen, setIsOpen] = useState(false);
@@ -121,6 +123,51 @@ const Menu = () => {
         {viewMode === 'online' && (
           <div className="w-full max-w-6xl px-4 sm:px-6 space-y-8 animate-in fade-in duration-300">
             
+            {/* Featured 3D Commercial Showcase Banner */}
+            <div 
+              onClick={() => setIs3DAdOpen(true)}
+              className="relative overflow-hidden rounded-2xl border border-emerald-500/40 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 cursor-pointer group hover:border-emerald-400 transition-all shadow-xl"
+              style={{
+                background: 'linear-gradient(135deg, rgba(10, 61, 44, 0.95) 0%, rgba(4, 31, 22, 0.98) 100%)',
+                boxShadow: '0 15px 35px -5px rgba(0,0,0,0.7), 0 0 30px rgba(52, 211, 153, 0.15)'
+              }}
+            >
+              <div className="flex items-center gap-4 w-full sm:w-auto">
+                <div className="w-16 h-16 rounded-xl overflow-hidden border border-emerald-500/50 shrink-0 shadow-lg relative">
+                  <img 
+                    src={getAssetUrl('/dosa-3d-ad.jpg')} 
+                    alt="Ghee Podi Masala Dosa 3D Commercial" 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-center pb-1">
+                    <span className="text-[9px] font-mono text-emerald-300 font-bold">360°</span>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-400 text-black font-mono">
+                      FEATURED 3D COMMERCIAL
+                    </span>
+                    <span className="text-xs text-emerald-300 font-mono">9:16 Vertical • 360° Studio</span>
+                  </div>
+                  <h4 className="text-sm sm:text-base font-bold text-white group-hover:text-emerald-300 transition-colors">
+                    Ghee Podi Masala Dosa — 360° Photorealistic Commercial
+                  </h4>
+                  <p className="text-xs text-emerald-100/70 hidden sm:block">
+                    Rising steam, shimmering pure cow ghee highlights & floating podi spices on a turning ceramic platter.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all shrink-0 cursor-pointer"
+              >
+                <Sparkles className="w-3.5 h-3.5 fill-current" />
+                <span>Watch 3D Ad (360°)</span>
+              </button>
+            </div>
+
             {/* Search and Category Filters */}
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -177,18 +224,44 @@ const Menu = () => {
                 return (
                   <div
                     key={item.id}
-                    className="royal-card rounded-2xl p-5 border flex flex-col justify-between hover:scale-[1.01] transition-all group relative overflow-hidden"
+                    className="royal-card rounded-2xl p-4 sm:p-5 border flex flex-col justify-between hover:scale-[1.01] transition-all group relative overflow-hidden"
                     style={{
                       backgroundColor: 'rgba(7, 38, 29, 0.85)',
                       borderColor: 'rgba(255, 255, 255, 0.15)'
                     }}
                   >
-                    {/* Bestseller Tag */}
-                    {item.isBestseller && (
-                      <span className="absolute top-3 right-3 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-[#34D399] border border-emerald-500/40 font-mono">
-                        ★ Chef Bestseller
-                      </span>
-                    )}
+                    {/* Food Item Image with Category Badge & 3D Commercial Trigger */}
+                    <div className="relative w-full h-44 rounded-xl overflow-hidden mb-3 bg-[#041A13]/80 border border-white/10 group-hover:border-[#34D399]/40 transition-all">
+                      <img 
+                        src={item.image} 
+                        alt={item.name} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                        loading="lazy"
+                      />
+                      
+                      {/* Bestseller Tag */}
+                      {item.isBestseller && (
+                        <span className="absolute top-2.5 right-2.5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500 text-black font-mono shadow-md">
+                          ★ Chef Bestseller
+                        </span>
+                      )}
+
+                      {/* 3D Commercial Watch Button for Ghee Podi Masala Dosa */}
+                      {item.has3DAd && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setIs3DAdOpen(true);
+                          }}
+                          className="absolute bottom-2.5 left-2.5 flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#041A13]/90 hover:bg-emerald-500 text-emerald-300 hover:text-black border border-emerald-500/60 text-[11px] font-bold font-mono transition-all shadow-lg backdrop-blur-sm cursor-pointer group/btn"
+                          title="Watch 6-8s 360° Photorealistic 3D Food Advertisement"
+                        >
+                          <Sparkles className="w-3.5 h-3.5 text-emerald-400 group-hover/btn:text-black animate-pulse" />
+                          <span>3D Ad (360°)</span>
+                        </button>
+                      )}
+                    </div>
 
                     <div className="space-y-3">
                       {/* Veg indicator & Category */}
@@ -574,6 +647,9 @@ const Menu = () => {
         )}
 
       </section>
+
+      {/* 6-8s 360° Photorealistic 3D Food Advertisement Modal */}
+      <FoodAdModal isOpen={is3DAdOpen} onClose={() => setIs3DAdOpen(false)} />
     </>
   );
 };

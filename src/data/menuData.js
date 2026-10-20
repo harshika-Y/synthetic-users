@@ -20,10 +20,11 @@ const RAW_MENU_ITEMS = [
     reviewsCount: 320,
     isVeg: true,
     isBestseller: true,
+    has3DAd: true,
     description: 'Crispy golden rice crepe roasted in aromatic cow ghee, coated with our signature spice gun-powder (podi), stuffed with potato masala.',
     prepTime: '15 mins',
     calories: '340 kcal',
-    image: '/dosa.png'
+    image: '/dosa-3d-ad.jpg'
   },
   {
     id: 'kdp-dosa-02',
@@ -51,7 +52,7 @@ const RAW_MENU_ITEMS = [
     description: 'Authentic Rayalaseema style spicy red chili podi roast with shallots and cold-pressed sesame oil.',
     prepTime: '12 mins',
     calories: '320 kcal',
-    image: '/dosa.png'
+    image: '/dosaSecond.png'
   },
   {
     id: 'kdp-dosa-04',
@@ -65,7 +66,7 @@ const RAW_MENU_ITEMS = [
     description: 'Lacy, ultra-crispy semolina crepe infused with cumin seeds, crushed black pepper, finely chopped ginger, and roasted onions.',
     prepTime: '18 mins',
     calories: '310 kcal',
-    image: '/dosa.png'
+    image: '/rava-dosa.jpg'
   },
   {
     id: 'kdp-dosa-05',
@@ -109,7 +110,7 @@ const RAW_MENU_ITEMS = [
     description: 'Wide Bidadi-style plate idli drenched in melted country butter and spicy roasted lentil powder.',
     prepTime: '10 mins',
     calories: '230 kcal',
-    image: '/idli.png'
+    image: '/thatte-idli.jpg'
   },
   {
     id: 'kdp-vada-01',
@@ -123,7 +124,7 @@ const RAW_MENU_ITEMS = [
     description: 'Golden fried crispy urad dal fritters soaked in aromatic shallot-coriander sambar, topped with fresh ghee.',
     prepTime: '10 mins',
     calories: '280 kcal',
-    image: '/vada.png'
+    image: '/vada.jpg'
   },
   {
     id: 'kdp-idli-03',
@@ -167,7 +168,7 @@ const RAW_MENU_ITEMS = [
     description: 'Traditional Karnataka rice and lentil mash simmered with 18 freshly roasted spices, seasonal vegetables, cashews, and crunchy kara boondi.',
     prepTime: '12 mins',
     calories: '410 kcal',
-    image: '/meals.png'
+    image: '/bisibelebath.jpg'
   },
   {
     id: 'kdp-meal-02',
@@ -181,7 +182,7 @@ const RAW_MENU_ITEMS = [
     description: 'Cooling probiotic rice gently blended with homemade yogurt, tempered with mustard, curry leaves, ginger, and fresh juicy pomegranate pearls.',
     prepTime: '8 mins',
     calories: '220 kcal',
-    image: '/meals.png'
+    image: '/curdrice.jpg'
   },
 
   // Filter Coffee & Beverages
@@ -197,7 +198,7 @@ const RAW_MENU_ITEMS = [
     description: 'Signature decoction brewed with 80:20 Arabica-chicory blend, frothed with thick full-cream milk in brass dabara-tumbler.',
     prepTime: '5 mins',
     calories: '90 kcal',
-    image: '/coffee.png'
+    image: '/coffee.jpg'
   },
   {
     id: 'kdp-drink-02',
@@ -211,7 +212,7 @@ const RAW_MENU_ITEMS = [
     description: 'Traditional cooling dessert drink crafted from almond gum (badam pisin), nannari syrup, reduced milk (basundi), and rich ice cream.',
     prepTime: '6 mins',
     calories: '290 kcal',
-    image: '/coffee.png'
+    image: '/jigarthanda.jpg'
   },
   {
     id: 'kdp-drink-03',
@@ -225,7 +226,7 @@ const RAW_MENU_ITEMS = [
     description: 'Refreshing churned yogurt infused with crushed ginger, green chilies, cilantro, curry leaves, and asafoetida.',
     prepTime: '5 mins',
     calories: '50 kcal',
-    image: '/coffee.png'
+    image: '/buttermilk.jpg'
   },
 
   // Desserts & Snacks
@@ -241,7 +242,7 @@ const RAW_MENU_ITEMS = [
     description: 'Melt-in-mouth royal sweet made with roasted gram flour, pure country ghee, and caramelized sugar.',
     prepTime: '5 mins',
     calories: '320 kcal',
-    image: '/sweet.png'
+    image: '/mysorepak.jpg'
   },
   {
     id: 'kdp-sweet-02',
@@ -255,7 +256,7 @@ const RAW_MENU_ITEMS = [
     description: 'Silky dessert made from tender coconut pulp, condensed coconut milk, cardamom, and roasted cashews.',
     prepTime: '5 mins',
     calories: '240 kcal',
-    image: '/sweet.png'
+    image: '/payasam.jpg'
   }
 ];
 
