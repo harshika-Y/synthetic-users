@@ -47,7 +47,7 @@ const Navbar = () => {
       >
         <div className="nav-brand">
           <Link to="/">
-            <img src={getAssetUrl('/logo.png')} alt="Kadappa Cafe" style={{ height: '85px', width: 'auto' }} />
+            <img src={getAssetUrl('/logo.png')} alt="Kadappa Cafe" className="h-12 md:h-20 w-auto object-contain" />
           </Link>
         </div>
 

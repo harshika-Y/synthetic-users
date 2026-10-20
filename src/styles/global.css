@@ -247,3 +247,20 @@
   align-items: center;
   gap: 16px;
 }
+
+@media (max-width: 768px) {
+  .nav-links {
+    gap: 10px;
+    overflow-x: auto;
+    max-width: calc(100vw - 110px);
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar {
+    display: none;
+  }
+  .nav-link {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+}
+

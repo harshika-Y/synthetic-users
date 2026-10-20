@@ -108,8 +108,8 @@ const Home = () => {
       {/* Scroll Animation Wrapper */}
       <div ref={containerRef} style={{ position: 'relative' }}>
         
-        {/* Absolute wrapper to prevent layout shift while giving physical height to the sticky container so it naturally stops at the boundary */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none', zIndex: 10 }}>
+        {/* Absolute wrapper to prevent layout shift while giving physical height to the sticky container so it naturally stops at the boundary (Desktop only) */}
+        <div className="hidden md:block" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none', zIndex: 10 }}>
           <div style={{ position: 'sticky', top: '15vh', height: '600px', display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', overflow: 'visible', width: '100%', maxWidth: '1440px', margin: '0 auto', paddingLeft: '5%', paddingRight: '5%' }}>
             <motion.img 
               src={getAssetUrl('/dosa.png')} 
@@ -128,10 +128,18 @@ const Home = () => {
           </div>
         </div>
 
-        <section className="hero-poster" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', alignItems: 'center', paddingTop: '130px', paddingBottom: '60px', paddingLeft: '5%', paddingRight: '5%', maxWidth: '1440px', margin: '0 auto', gap: '40px', minHeight: '90vh' }}>
+        <section className="hero-poster grid grid-cols-1 md:grid-cols-2 items-center pt-[100px] md:pt-[130px] pb-[40px] md:pb-[60px] px-[5%] max-w-[1440px] mx-auto gap-8 md:gap-10 min-h-[auto] md:min-h-[90vh]">
           
           {/* Left Side: Elegant Typography */}
-          <div style={{ paddingRight: '20px', zIndex: 2 }}>
+          <div className="z-10 md:pr-5">
+            {/* Mobile Hero Dosa Image */}
+            <div className="block md:hidden w-full my-4 flex justify-center">
+              <img 
+                src={getAssetUrl('/dosa.png')} 
+                alt="Kadappa Cafe Dosa"
+                className="w-full max-w-[320px] h-auto drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)]"
+              />
+            </div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px', marginBottom: '18px' }}>
               <div className="text-eyebrow" style={{ color: '#A0B3A6', letterSpacing: '0.2em', fontSize: '13px' }}>
                 AUTHENTIC SOUTH INDIAN FLAVOURS
@@ -275,19 +283,26 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Right Side: Empty placeholder for sticky Dosa */}
-          <div style={{ minHeight: '600px' }}></div>
+          {/* Right Side: Empty placeholder for sticky Dosa on Desktop */}
+          <div className="hidden md:block" style={{ minHeight: '600px' }}></div>
         </section>
 
         <div className="poster-section" style={{paddingTop: '0', paddingBottom: '0'}}>
           <div className="dotted-divider"></div>
         </div>
 
-        <section className="poster-section" style={{ padding: '80px 5%', maxWidth: '1440px', margin: '0 auto', minHeight: '90vh' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'center' }}>
+        <section className="poster-section" style={{ padding: '60px 5%', maxWidth: '1440px', margin: '0 auto', minHeight: 'auto' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-[60px] items-center">
             
-            {/* Left Side: Empty placeholder for sticky Dosa */}
-            <div style={{ minHeight: '500px' }}></div>
+            {/* Left Side: Empty placeholder for sticky Dosa on Desktop, clean image on mobile */}
+            <div className="hidden md:block" style={{ minHeight: '500px' }}></div>
+            <div className="block md:hidden w-full flex justify-center mb-4">
+              <img 
+                src={getAssetUrl('/dosaSecond.png')} 
+                alt="Kadappa Dosa Special"
+                className="w-full max-w-[320px] h-auto rounded-2xl shadow-2xl border border-white/10"
+              />
+            </div>
 
             {/* Right Side: Text Content */}
             <motion.div 
@@ -295,7 +310,7 @@ const Home = () => {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
               viewport={{ once: true }}
-              style={{ paddingRight: '40px' }}
+              style={{ paddingRight: '20px' }}
             >
               <div className="text-eyebrow" style={{ color: '#A0B3A6', letterSpacing: '0.2em', fontSize: '13px', marginBottom: '16px' }}>
                 AUTHENTIC SOUTH INDIAN FLAVOURS
