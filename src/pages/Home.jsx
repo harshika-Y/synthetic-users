@@ -110,6 +110,38 @@ const Home = () => {
       {/* Scroll Animation Wrapper */}
       <div ref={containerRef} style={{ position: 'relative' }}>
         
+        {/* Temple Sunset Hero Background */}
+        <div 
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '100vh',
+            minHeight: '720px',
+            maxHeight: '960px',
+            backgroundImage: `url(${getAssetUrl('/temple-bg.jpg')})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center 40%',
+            backgroundRepeat: 'no-repeat',
+            pointerEvents: 'none',
+            zIndex: 0
+          }}
+        >
+          {/* Cinematic dark gradients for text contrast & seamless bottom fade into deep green theme */}
+          <div 
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: `
+                linear-gradient(to right, rgba(4, 26, 19, 0.88) 0%, rgba(4, 26, 19, 0.65) 45%, rgba(4, 26, 19, 0.2) 100%),
+                linear-gradient(to bottom, rgba(4, 26, 19, 0.5) 0%, transparent 25%, rgba(6, 35, 25, 0.75) 75%, #062319 100%)
+              `
+            }} 
+          />
+        </div>
+
         {/* Sticky Dosa Desktop Animation Track (strictly constrained within the 2-column grid) */}
         <div className="hidden md:block pointer-events-none" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 10 }}>
           <div 
