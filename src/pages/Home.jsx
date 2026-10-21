@@ -164,7 +164,7 @@ const Home = () => {
         <section className="hero-poster grid grid-cols-1 md:grid-cols-2 items-center pt-[100px] md:pt-[125px] pb-[40px] md:pb-[60px] px-[5%] max-w-[1440px] mx-auto gap-8 md:gap-10 min-h-[auto] md:min-h-[88vh]">
           
           {/* Left Side: Elegant Typography */}
-          <div className="z-10 w-full max-w-[560px]">
+          <div className="z-10 w-full max-w-[490px]">
             {/* Mobile Hero Dosa Image */}
             <div className="block md:hidden w-full my-6 flex justify-center">
               <img 
@@ -189,7 +189,7 @@ const Home = () => {
             <h1 
               style={{ 
                 fontFamily: "'Playfair Display', serif", 
-                fontSize: 'clamp(38px, 4.2vw, 64px)', 
+                fontSize: 'clamp(36px, 4.2vw, 62px)', 
                 lineHeight: '1.14', 
                 color: '#F4F4F4', 
                 marginBottom: '20px', 
@@ -231,7 +231,7 @@ const Home = () => {
             </h1>
 
             {/* Interactive Dynamic Tagline Selector Pills */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '22px', maxWidth: '520px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '22px', maxWidth: '460px' }}>
               {DYNAMIC_TAGLINES.map((item, idx) => {
                 const isActive = idx === taglineIndex;
                 return (
