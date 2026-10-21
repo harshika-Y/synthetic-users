@@ -1,26 +1,57 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Coffee, Heart, Leaf } from 'lucide-react';
+import { getAssetUrl } from '../utils/assets';
 
 const About = () => {
   return (
     <>
       <div className="watermark-bg"></div>
       
-      {/* Hero Section */}
-      <section style={{ paddingTop: '150px', paddingBottom: '80px', textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
+      {/* Hero Section with Warm Cafe Interior Background */}
+      <section 
+        style={{ 
+          position: 'relative',
+          paddingTop: '160px', 
+          paddingBottom: '110px', 
+          textAlign: 'center', 
+          paddingLeft: '5%', 
+          paddingRight: '5%',
+          backgroundImage: `url(${getAssetUrl('/about-bg.jpg')})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center 40%',
+          backgroundRepeat: 'no-repeat',
+          overflow: 'hidden'
+        }}
+      >
+        {/* Warm atmospheric vignette overlay for text legibility and smooth bottom transition */}
+        <div 
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: `
+              radial-gradient(circle at center, rgba(4, 26, 19, 0.55) 0%, rgba(4, 26, 19, 0.8) 65%, rgba(4, 26, 19, 0.95) 100%),
+              linear-gradient(to bottom, rgba(4, 26, 19, 0.4) 0%, transparent 25%, rgba(6, 35, 25, 0.75) 75%, #062319 100%)
+            `,
+            pointerEvents: 'none'
+          }}
+        />
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
+          style={{ position: 'relative', zIndex: 1 }}
         >
-          <div className="text-eyebrow" style={{ color: '#A0B3A6', letterSpacing: '0.2em', fontSize: '14px', marginBottom: '16px' }}>
+          <div className="text-eyebrow" style={{ color: '#FFD166', letterSpacing: '0.25em', fontSize: '13px', fontWeight: '700', marginBottom: '14px' }}>
             OUR JOURNEY
           </div>
-          <h1 className="text-display" style={{ fontSize: 'clamp(50px, 10vw, 120px)', lineHeight: '1', color: 'var(--color-tiger-gold)', marginBottom: '30px' }}>
-            THE KADAPPA <span style={{ color: '#FFF' }}>STORY</span>
+          <div style={{ width: '40px', height: '2px', backgroundColor: '#FFD166', margin: '0 auto 22px', borderRadius: '1px' }}></div>
+          <h1 className="text-display" style={{ fontSize: 'clamp(46px, 8.5vw, 105px)', lineHeight: '1.08', color: '#FFFFFF', marginBottom: '26px', fontWeight: '800', letterSpacing: '0.02em', textShadow: '0 4px 25px rgba(0,0,0,0.85)' }}>
+            THE KADAPPA STORY
           </h1>
-          <p style={{ fontFamily: "system-ui, sans-serif", fontSize: '18px', color: '#A0B3A6', maxWidth: '700px', margin: '0 auto', lineHeight: '1.6' }}>
+          <p style={{ fontFamily: "system-ui, sans-serif", fontSize: '18px', color: '#E0E7E2', maxWidth: '720px', margin: '0 auto', lineHeight: '1.7', textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>
             A culinary expedition into the heart of South India, blending authentic traditions with a modern dining experience. We believe in serving more than just food; we serve memories.
           </p>
         </motion.div>

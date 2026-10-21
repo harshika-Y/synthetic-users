@@ -185,6 +185,26 @@
   text-shadow: 0 0 12px rgba(52, 211, 153, 0.5);
 }
 
+.nav-link.active {
+  color: #FFD166;
+  opacity: 1;
+  font-weight: 700;
+  position: relative;
+  text-shadow: 0 0 14px rgba(255, 209, 102, 0.45);
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0px;
+  left: 10px;
+  right: 10px;
+  height: 2.5px;
+  background-color: #FFD166;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(255, 209, 102, 0.85);
+}
+
 .surface-card {
   background: linear-gradient(145deg, rgba(14, 61, 46, 0.88) 0%, rgba(8, 38, 28, 0.96) 100%);
   border: 1px solid rgba(255, 255, 255, 0.2);

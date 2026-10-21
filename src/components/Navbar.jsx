@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { Sparkles, ShoppingBag, Receipt, User } from 'lucide-react';
 import CustomerModal from './CustomerModal';
 import ResearcherModal from './ResearcherModal';
@@ -52,11 +52,11 @@ const Navbar = () => {
         </div>
 
         <div className="nav-links flex items-center gap-5">
-          <Link to="/" className="nav-link">HOME</Link>
-          <Link to="/about" className="nav-link">ABOUT</Link>
-          <Link to="/menu" className="nav-link">MENU & ORDER</Link>
-          <Link to="/book" className="nav-link">BOOK TABLE</Link>
-          <Link to="/contact" className="nav-link">CONTACT</Link>
+          <NavLink to="/" end className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>HOME</NavLink>
+          <NavLink to="/about" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>ABOUT</NavLink>
+          <NavLink to="/menu" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>MENU & ORDER</NavLink>
+          <NavLink to="/book" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>BOOK TABLE</NavLink>
+          <NavLink to="/contact" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>CONTACT</NavLink>
 
           {/* Cart Button with Count Badge */}
           <button
