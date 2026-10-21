@@ -98,9 +98,9 @@ const Home = () => {
   });
 
   // Map scroll progress (0 to 1) to x, y, scale, and rotation values
-  const dosaX = useTransform(scrollYProgress, [0, 0.45, 1], ["5%", "-90%", "-90%"]);
-  const dosaY = useTransform(scrollYProgress, [0, 0.45, 1], ["20%", "5%", "5%"]);
-  const dosaScale = useTransform(scrollYProgress, [0, 0.45, 1], [1, 0.85, 0.85]);
+  const dosaX = useTransform(scrollYProgress, [0, 0.45, 1], ["0%", "-108%", "-108%"]);
+  const dosaY = useTransform(scrollYProgress, [0, 0.45, 1], ["0%", "0%", "0%"]);
+  const dosaScale = useTransform(scrollYProgress, [0, 0.45, 1], [1, 0.88, 0.88]);
   const dosaRotate = useTransform(scrollYProgress, [0, 0.45, 1], [0, 0, 0]);
 
   return (
@@ -110,43 +110,76 @@ const Home = () => {
       {/* Scroll Animation Wrapper */}
       <div ref={containerRef} style={{ position: 'relative' }}>
         
-        {/* Absolute wrapper to prevent layout shift while giving physical height to the sticky container so it naturally stops at the boundary (Desktop only) */}
-        <div className="hidden md:block" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none', zIndex: 10 }}>
-          <div style={{ position: 'sticky', top: '15vh', height: '600px', display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', overflow: 'visible', width: '100%', maxWidth: '1440px', margin: '0 auto', paddingLeft: '5%', paddingRight: '5%' }}>
-            <motion.img 
-              src={getAssetUrl('/dosa.png')} 
-              alt="Kadappa Cafe Dosa"
-              style={{ 
-                width: '110%', 
-                maxWidth: '700px', 
-                height: 'auto', 
-                filter: 'drop-shadow(0 40px 60px rgba(0,0,0,0.8))',
-                x: dosaX,
-                y: dosaY,
-                scale: dosaScale,
-                rotate: dosaRotate
-              }} 
-            />
+        {/* Sticky Dosa Desktop Animation Track (strictly constrained within the 2-column grid) */}
+        <div className="hidden md:block pointer-events-none" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 10 }}>
+          <div 
+            style={{ 
+              position: 'sticky', 
+              top: '12vh', 
+              height: '600px', 
+              maxWidth: '1440px', 
+              margin: '0 auto', 
+              paddingLeft: '5%', 
+              paddingRight: '5%',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+              gap: '2.5rem',
+              alignItems: 'center'
+            }}
+          >
+            {/* Left Column in Sticky Track: Empty during Hero; receives Dosa when scrolling into Section 2 */}
+            <div />
+
+            {/* Right Column in Sticky Track: Showcases Dosa in Hero */}
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
+              <motion.div
+                style={{
+                  width: '100%',
+                  maxWidth: '520px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  x: dosaX,
+                  y: dosaY,
+                  scale: dosaScale,
+                  rotate: dosaRotate
+                }}
+              >
+                <img 
+                  src={getAssetUrl('/dosa.png')} 
+                  alt="Kadappa Cafe Dosa"
+                  style={{ 
+                    width: '100%', 
+                    maxWidth: '520px', 
+                    height: 'auto', 
+                    objectFit: 'contain',
+                    filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.85)) drop-shadow(0 0 35px rgba(52, 211, 153, 0.15))',
+                  }} 
+                />
+              </motion.div>
+            </div>
           </div>
         </div>
 
-        <section className="hero-poster grid grid-cols-1 md:grid-cols-2 items-center pt-[100px] md:pt-[130px] pb-[40px] md:pb-[60px] px-[5%] max-w-[1440px] mx-auto gap-8 md:gap-10 min-h-[auto] md:min-h-[90vh]">
+        <section className="hero-poster grid grid-cols-1 md:grid-cols-2 items-center pt-[100px] md:pt-[125px] pb-[40px] md:pb-[60px] px-[5%] max-w-[1440px] mx-auto gap-8 md:gap-10 min-h-[auto] md:min-h-[88vh]">
           
           {/* Left Side: Elegant Typography */}
-          <div className="z-10 md:pr-5">
+          <div className="z-10 w-full max-w-[560px]">
             {/* Mobile Hero Dosa Image */}
-            <div className="block md:hidden w-full my-4 flex justify-center">
+            <div className="block md:hidden w-full my-6 flex justify-center">
               <img 
                 src={getAssetUrl('/dosa.png')} 
                 alt="Kadappa Cafe Dosa"
                 className="w-full max-w-[320px] h-auto drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)]"
               />
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px', marginBottom: '18px' }}>
-              <div className="text-eyebrow" style={{ color: '#A0B3A6', letterSpacing: '0.2em', fontSize: '13px' }}>
+            
+            {/* Eyebrow & Live Showcase Badge */}
+            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '18px' }}>
+              <div className="text-eyebrow" style={{ color: '#A0B3A6', letterSpacing: '0.2em', fontSize: '12px', fontWeight: '600' }}>
                 AUTHENTIC SOUTH INDIAN FLAVOURS
               </div>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '3px 10px', borderRadius: '20px', backgroundColor: 'rgba(52, 211, 153, 0.12)', border: '1px solid rgba(52, 211, 153, 0.35)', fontSize: '10px', color: '#34D399', fontFamily: 'monospace' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '3px 10px', borderRadius: '20px', backgroundColor: 'rgba(52, 211, 153, 0.12)', border: '1px solid rgba(52, 211, 153, 0.35)', fontSize: '10px', color: '#34D399', fontFamily: 'monospace', fontWeight: '600' }}>
                 <span className="w-1.5 h-1.5 rounded-full bg-[#34D399] animate-pulse" />
                 <span>DYNAMIC SHOWCASE</span>
               </div>
@@ -156,47 +189,49 @@ const Home = () => {
             <h1 
               style={{ 
                 fontFamily: "'Playfair Display', serif", 
-                fontSize: 'clamp(46px, 6.2vw, 88px)', 
-                lineHeight: '1.12', 
+                fontSize: 'clamp(38px, 4.2vw, 64px)', 
+                lineHeight: '1.14', 
                 color: '#F4F4F4', 
-                marginBottom: '16px', 
+                marginBottom: '20px', 
                 fontWeight: '600',
-                minHeight: '2.3em'
+                letterSpacing: '-0.02em',
+                minHeight: '2.4em'
               }}
               onMouseEnter={() => setIsPaused(true)}
               onMouseLeave={() => setIsPaused(false)}
             >
-              Traditional<br/>
-              Taste,{' '}
-              <span 
-                style={{ 
-                  color: '#34D399', 
-                  fontStyle: 'italic',
-                  background: 'linear-gradient(135deg, #FFFFFF 0%, #34D399 50%, #6EE7B7 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  display: 'inline'
-                }}
-              >
-                {displayText}
+              <span style={{ display: 'block' }}>Traditional Taste,</span>
+              <span style={{ display: 'inline-flex', alignItems: 'baseline', flexWrap: 'wrap' }}>
+                <span 
+                  style={{ 
+                    color: '#34D399', 
+                    fontStyle: 'italic',
+                    background: 'linear-gradient(135deg, #FFFFFF 0%, #34D399 50%, #6EE7B7 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    display: 'inline'
+                  }}
+                >
+                  {displayText}
+                </span>
+                <span 
+                  style={{
+                    display: 'inline-block',
+                    width: '3px',
+                    height: '0.82em',
+                    backgroundColor: '#34D399',
+                    marginLeft: '6px',
+                    verticalAlign: '-0.03em',
+                    boxShadow: '0 0 10px #34D399',
+                    borderRadius: '2px'
+                  }}
+                  className="animate-pulse"
+                />
               </span>
-              <span 
-                style={{
-                  display: 'inline-block',
-                  width: '3.5px',
-                  height: '0.85em',
-                  backgroundColor: '#34D399',
-                  marginLeft: '4px',
-                  verticalAlign: '-0.05em',
-                  boxShadow: '0 0 10px #34D399',
-                  borderRadius: '2px'
-                }}
-                className="animate-pulse"
-              />
             </h1>
 
             {/* Interactive Dynamic Tagline Selector Pills */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '22px', maxWidth: '520px' }}>
               {DYNAMIC_TAGLINES.map((item, idx) => {
                 const isActive = idx === taglineIndex;
                 return (
@@ -208,15 +243,15 @@ const Home = () => {
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '6px',
-                      padding: '4px 12px',
+                      padding: '5px 13px',
                       borderRadius: '20px',
                       fontSize: '11px',
                       fontFamily: 'system-ui, sans-serif',
                       fontWeight: '600',
                       cursor: 'pointer',
-                      transition: 'all 0.25s ease',
-                      backgroundColor: isActive ? 'rgba(52, 211, 153, 0.2)' : 'rgba(255, 255, 255, 0.05)',
-                      color: isActive ? '#34D399' : 'rgba(255, 255, 255, 0.65)',
+                      transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                      backgroundColor: isActive ? 'rgba(52, 211, 153, 0.18)' : 'rgba(255, 255, 255, 0.05)',
+                      color: isActive ? '#34D399' : 'rgba(255, 255, 255, 0.7)',
                       border: isActive ? '1px solid #34D399' : '1px solid rgba(255, 255, 255, 0.12)',
                       boxShadow: isActive ? '0 0 12px rgba(52, 211, 153, 0.25)' : 'none'
                     }}
@@ -226,8 +261,9 @@ const Home = () => {
                         width: '6px', 
                         height: '6px', 
                         borderRadius: '50%', 
-                        backgroundColor: isActive ? '#34D399' : 'rgba(255, 255, 255, 0.3)',
-                        display: 'inline-block'
+                        backgroundColor: isActive ? '#34D399' : 'rgba(255, 255, 255, 0.35)',
+                        display: 'inline-block',
+                        boxShadow: isActive ? '0 0 6px #34D399' : 'none'
                       }} 
                     />
                     <span>{item.badge}</span>
@@ -237,15 +273,15 @@ const Home = () => {
             </div>
             
             {/* Dynamic Description matching active tagline */}
-            <div style={{ minHeight: '60px', marginBottom: '24px' }}>
+            <div style={{ minHeight: '62px', marginBottom: '26px', maxWidth: '480px' }}>
               <AnimatePresence mode="wait">
                 <motion.p 
                   key={taglineIndex}
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.3 }}
-                  style={{ fontFamily: "system-ui, sans-serif", color: '#A0B3A6', fontSize: '16px', lineHeight: '1.6', maxWidth: '480px', margin: 0 }}
+                  transition={{ duration: 0.25 }}
+                  style={{ fontFamily: "system-ui, sans-serif", color: '#A0B3A6', fontSize: '15px', lineHeight: '1.65', margin: 0 }}
                 >
                   {DYNAMIC_TAGLINES[taglineIndex].desc}
                 </motion.p>
@@ -286,7 +322,7 @@ const Home = () => {
           </div>
 
           {/* Right Side: Empty placeholder for sticky Dosa on Desktop */}
-          <div className="hidden md:block" style={{ minHeight: '600px' }}></div>
+          <div className="hidden md:block" style={{ minHeight: '550px' }}></div>
         </section>
 
         <div className="poster-section" style={{paddingTop: '0', paddingBottom: '0'}}>
@@ -294,10 +330,10 @@ const Home = () => {
         </div>
 
         <section className="poster-section" style={{ padding: '60px 5%', maxWidth: '1440px', margin: '0 auto', minHeight: 'auto' }}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-[60px] items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-center">
             
             {/* Left Side: Empty placeholder for sticky Dosa on Desktop, clean image on mobile */}
-            <div className="hidden md:block" style={{ minHeight: '500px' }}></div>
+            <div className="hidden md:block" style={{ minHeight: '520px' }}></div>
             <div className="block md:hidden w-full flex justify-center mb-4">
               <img 
                 src={getAssetUrl('/dosaSecond.png')} 
@@ -308,11 +344,12 @@ const Home = () => {
 
             {/* Right Side: Text Content */}
             <motion.div 
-              initial={{ opacity: 0, x: 50 }}
+              initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
               viewport={{ once: true }}
-              style={{ paddingRight: '20px' }}
+              className="w-full max-w-[560px]"
+              style={{ paddingLeft: '10px' }}
             >
               <div className="text-eyebrow" style={{ color: '#A0B3A6', letterSpacing: '0.2em', fontSize: '13px', marginBottom: '16px' }}>
                 AUTHENTIC SOUTH INDIAN FLAVOURS

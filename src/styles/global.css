@@ -207,10 +207,7 @@
 }
 
 .hero-poster {
-  min-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  min-height: 88vh;
   padding: 100px 5% 40px;
 }
 
